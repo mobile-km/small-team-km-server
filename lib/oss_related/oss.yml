@@ -1,0 +1,12 @@
+development:
+  bucket: agile_dev
+  access_key_id: sx50absmkje4tz91vaph131r
+  secret_access_key: 95zX9CFtpQ32W39oDkqGywiw8y4=
+test:
+  bucket: agile_dev
+  access_key_id: sx50absmkje4tz91vaph131r
+  secret_access_key: 95zX9CFtpQ32W39oDkqGywiw8y4=
+production:
+  bucket: agile_prod
+  access_key_id: sx50absmkje4tz91vaph131r
+  secret_access_key: 95zX9CFtpQ32W39oDkqGywiw8y4=

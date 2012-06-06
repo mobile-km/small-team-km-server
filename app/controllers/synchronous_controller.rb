@@ -1,7 +1,8 @@
 class SynchronousController < ApplicationController
   def handshake
     uuid = UUIDTools::UUID.random_create.to_s
-    render :text=>uuid
+    count = current_user.notes.count
+    render :json=>{:syn_task_uuid=>uuid,:note_count=>count}
   end
 
   # note.updated_at.to_i 秒数

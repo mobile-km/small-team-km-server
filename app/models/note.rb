@@ -45,4 +45,10 @@ class Note < ActiveRecord::Base
       }
     end
   end
+
+  module UserMethods
+    def self.included(base)
+      base.has_many :notes,:foreign_key=>:creator_id
+    end
+  end
 end

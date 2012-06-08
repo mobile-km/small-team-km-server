@@ -48,9 +48,9 @@ module Paperclip
     # 获取一个随机的文件名
     def get_randstr_filename(uploaded_filename)
       arr = uploaded_filename.split(".")
-      ext_name = arr.length > 1 ? arr.last.downcase : ''
+      ext_name = arr.length > 1 ? ".#{arr.last.downcase}" : ''
 
-      return "#{randstr}.#{ext_name}".strip
+      return "#{randstr}#{ext_name}".strip
     end
   end
 end

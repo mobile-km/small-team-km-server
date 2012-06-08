@@ -7,8 +7,8 @@ class Note < ActiveRecord::Base
   belongs_to :creator, :class_name=>"User"
 
   has_attached_file :attachment,
-    :path => '/:class/:attachment/:id/:style/:basename.:extension',
-    :url  => "http://storage.aliyun.com/#{OssManager::CONFIG["bucket"]}/:class/:attachment/:id/:style/:basename.:extension",
+    :path => '/:class/:attachment/:id/:style/:filename',
+    :url  => "http://storage.aliyun.com/#{OssManager::CONFIG["bucket"]}/:class/:attachment/:id/:style/:filename",
     :storage => :oss
 
   def self.compare(syn_task_uuid,note_uuid,client_note_updated_at)

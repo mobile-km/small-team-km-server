@@ -38,7 +38,7 @@ module UserAuthMethods
         :id           => self.id,
         :name         => self.name,
         :sign         => self.sign || '',
-        :avatar_url  => ""
+        :avatar_url  => self.logo.url
       }
     end
   end

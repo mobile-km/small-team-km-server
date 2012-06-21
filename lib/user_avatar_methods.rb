@@ -10,7 +10,7 @@ module UserAvatarMethods
         :mini   => '24x24#'
       },
       :default_style => :normal,
-      :default_url   => '/default_avatars/:style.png',
+      :default_url   => '',
       :path => '/:class/:attachment/:id/:style/:basename.:extension',
       :url  => "http://storage.aliyun.com/#{OssManager::CONFIG["bucket"]}/:class/:attachment/:id/:style/:basename.:extension",
       :storage => :oss

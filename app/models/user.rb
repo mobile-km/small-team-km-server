@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   validates :password,
     :presence => { :on => :create },
     :confirmation => true,
-    :length => { :in => 4..32 }
+    :length => { :in => 4..32,:on => :create }
   
   def password
     @password

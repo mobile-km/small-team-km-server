@@ -11,6 +11,7 @@ jQuery(function() {
       console.log(code);
       switch (code) {
       case 404:
+        set_result_text('无法获取资源！');
         break;
       case 410:
         set_result_text('无法获取资源！');

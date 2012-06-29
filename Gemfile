@@ -45,3 +45,4 @@ gem 'uuidtools', :require => 'uuidtools'
 gem 'paperclip', '2.4.5'
 
 gem 'nokogiri'
+gem 'ruby-readability', :require => 'readability'

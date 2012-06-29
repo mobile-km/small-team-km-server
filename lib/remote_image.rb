@@ -1,3 +1,5 @@
+require 'mime/types'
+
 class RemoteImage
   attr_reader :file, :name, :type
 
@@ -16,7 +18,7 @@ class RemoteImage
   end
 
   def clean
-    @file && @file.closed? && close
+    close
     @file && File::unlink(@file.path)
 
     @response = nil
@@ -28,7 +30,7 @@ class RemoteImage
   end
 
   def close
-    @file && @file.close
+    @file && !@file.closed? && @file.close
 
     self
   end

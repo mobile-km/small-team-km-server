@@ -1,5 +1,7 @@
 jQuery(function() {
   var $result = $('.result');
+  var request_url = $('.remote-resource').attr('action');
+
   var set_result_elm = function(result, code) {
     $result.addClass(result).fadeIn();
 
@@ -27,13 +29,13 @@ jQuery(function() {
     return $result.text(text);
   };
 
-  jQuery('.remote-image').on('submit', function(event) {
+  jQuery('.remote-resource').on('submit', function(event) {
     event.preventDefault();
     $result.fadeOut();
 
 
     var $request = jQuery.ajax({
-      url: '/notes/collect_image',
+      url: request_url,
       type: 'POST',
       data: {
         'url': $(this).find('.url-field').val()

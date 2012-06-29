@@ -1,11 +1,11 @@
-class ImagesController < ApplicationController
+class PagesController < ApplicationController
   def add
   end
 
   def collect
-    RemoteImage.new(URI params[:url]).fetch do |image|
-      @note = Note.create :attachment => image.file,
-                          :kind       => Note::Kind::IMAGE
+    RemotePage.new(URI params[:url]).fetch do |page|
+      @note = Note.create :content => page.content,
+                          :kind    => Note::Kind::TEXT
     end
 
     render :json   => {:result => 'success'}
@@ -15,11 +15,11 @@ class ImagesController < ApplicationController
   rescue SocketError
     render :json   => {:result => 'gone'},
            :status => 410
-  rescue RemoteImage::ResourceNotFoundError
+  rescue RemotePage::ResourceNotFoundError
     render :json   => {:result => 'notfound'},
            :status => 404
-  rescue RemoteImage::ContentTypeError,
-         RemoteImage::InvalidURLError
+  rescue RemotePage::ContentTypeError,
+         RemotePage::InvalidURLError
     render :json   => {:result => 'notacceptable'},
            :status => 406
   end

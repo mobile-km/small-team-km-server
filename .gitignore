@@ -6,3 +6,5 @@ tmp/
 .rvmrc
 Gemfile.lock
 .powenv
+.DS_Store
+._.DS_Store

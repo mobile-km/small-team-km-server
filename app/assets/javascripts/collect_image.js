@@ -1,6 +1,8 @@
 jQuery(function() {
   var $result = $('.result');
   var set_result_elm = function(result, code) {
+    $result.addClass(result).fadeIn();
+
     if (result === 'done') {
       return set_result_text('采集成功！');
     } else if (result === 'fail') {
@@ -19,8 +21,6 @@ jQuery(function() {
         break;
       }
     }
-
-    return $result.addClass(result).fadeIn();
   };
 
   var set_result_text = function(text) {

@@ -16,7 +16,7 @@ class RemoteImage
   end
 
   def clean
-    close
+    @file && @file.closed? && close
     @file && File::unlink(@file.path)
 
     @response = nil

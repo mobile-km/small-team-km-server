@@ -1,3 +1,4 @@
+# encoding: utf-8
 # 产生一个随机字符串
 def randstr(length=8)
   base = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

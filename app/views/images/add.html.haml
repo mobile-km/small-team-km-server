@@ -1,0 +1,11 @@
+.result
+= form_tag collect_image_url,
+           :class => 'remote-resource' do
+
+  = label_tag :url,
+              '请输入图片url'
+
+  = text_field_tag :url, nil,
+                   :class => 'url-field'
+
+  = submit_tag

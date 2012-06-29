@@ -3,3 +3,8 @@ db/*.sqlite3
 log/*.log
 tmp/
 .sass-cache/
+.rvmrc
+Gemfile.lock
+.powenv
+.DS_Store
+._.DS_Store

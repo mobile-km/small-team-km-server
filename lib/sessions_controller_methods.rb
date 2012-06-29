@@ -1,3 +1,4 @@
+# encoding: utf-8
 module SessionsControllerMethods
   # 登录
   def new

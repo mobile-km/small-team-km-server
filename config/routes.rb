@@ -5,10 +5,21 @@ Voteapp::Application.routes.draw do
   get  '/login'  => 'sessions#new'
   post '/login'  => 'sessions#create'
   get  '/logout' => 'sessions#destroy'
-  
+
   get  '/signup'        => 'signup#form'
   post '/signup_submit' => 'signup#form_submit'
+
+  # -- 外部资源采集相关 --
+  get  '/notes/add_image'     => 'images#add',
+       :as                    => :add_image
+  post '/notes/collect_image' => 'images#collect',
+       :as                    => :collect_image
   
+  get  '/notes/add_page'      => 'pages#add',
+       :as                    => :add_page
+  post '/notes/collect_page'  => 'pages#collect',
+       :as                    => :collect_page
+
   # -- 以下可以自由添加其他 routes 配置项
   
   get '/auth'    => 'sessions#auth'

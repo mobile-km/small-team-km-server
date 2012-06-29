@@ -20,4 +20,12 @@ Voteapp::Application.routes.draw do
   post '/syn/push'       => 'synchronous#push'
   post '/syn/push_image' => 'synchronous#push_image'
   get '/syn/get_next'    => 'synchronous#get_next'
+
+  # -- 联系人
+  get '/users/search'              => 'users#search'
+  post '/contacts/invite'          => 'contacts#invite'
+  post '/contacts/accept_invite'   => 'contacts#accept_invite'
+  post '/contacts/refuse_invite'   => 'contacts#refuse_invite'
+  delete '/contacts/remove'        => 'contacts#remove'
+  get '/contacts/refresh_status'   => 'contacts#refresh_status'
 end

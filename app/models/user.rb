@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   include UserAuthMethods
   include UserAvatarMethods
   include Note::UserMethods
+  include Contact::UserMethods
   
   has_one :online_record, :dependent => :destroy
   

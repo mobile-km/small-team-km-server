@@ -11,8 +11,6 @@ jQuery(function() {
       console.log(code);
       switch (code) {
       case 404:
-        set_result_text('无法获取资源！');
-        break;
       case 410:
         set_result_text('无法获取资源！');
         break;
@@ -21,7 +19,6 @@ jQuery(function() {
         break;
       case 406:
         set_result_text('不符合要求的资源地址！');
-        break;
       }
     }
   };
@@ -32,7 +29,7 @@ jQuery(function() {
 
   jQuery('.remote-resource').on('submit', function(event) {
     event.preventDefault();
-    $result.fadeOut();
+    $result.removeClass('fail done').fadeOut();
 
 
     var $request = jQuery.ajax({

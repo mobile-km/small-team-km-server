@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
+gem 'nokogiri'
 gem 'rails', '3.1.1'
 
 # Bundle edge Rails instead:
@@ -44,5 +45,4 @@ gem 'uuidtools', :require => 'uuidtools'
 
 gem 'paperclip', '2.4.5'
 
-gem 'nokogiri'
 gem 'ruby-readability', :require => 'readability'

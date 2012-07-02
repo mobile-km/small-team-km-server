@@ -142,14 +142,17 @@ class Contact < ActiveRecord::Base
     end
 
     def remove_contact_user(contact_user)
-      return if !self.is_contact_user?(contact_user)
+      case true
+      when self.is_contact_user?(contact_user)
+        contact = self.contacts.find_by_contact_user_id(contact_user.id)
+        contact.destroy
 
-      contact = self.contacts.find_by_contact_user_id(user.id)
-      contact.destroy
-
-      other_contact = user.contacts.find_by_contact_user_id(self.id)
-      other_contact.update_attributes(:status=>Status::BE_REMOVED)
+        other_contact = contact_user.contacts.find_by_contact_user_id(self.id)
+        other_contact.update_attributes(:status=>Status::BE_REMOVED)
+      when self.is_be_removed?(contact_user) || self.is_be_refused?(contact_user)
+        contact = self.contacts.find_by_contact_user_id(contact_user.id)
+        contact.destroy
+      end
     end
-
   end
 end

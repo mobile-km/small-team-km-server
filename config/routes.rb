@@ -26,11 +26,10 @@ Voteapp::Application.routes.draw do
 
   # -- 同步
   # 握手 url
-  get '/syn/handshake'   => 'synchronous#handshake'
-  post '/syn/compare'    => 'synchronous#compare'
-  post '/syn/push'       => 'synchronous#push'
-  post '/syn/push_image' => 'synchronous#push_image'
-  get '/syn/get_next'    => 'synchronous#get_next'
+  get   '/syn/pull'        => 'synchronous#pull'
+  post  '/syn/push'        => 'synchronous#push'
+  post  '/syn/push_image'  => 'synchronous#push_image'
+  get   '/syn/detail_meta' => 'synchronous#detail_meta'
 
   # -- 联系人
   get '/users/search'              => 'users#search'

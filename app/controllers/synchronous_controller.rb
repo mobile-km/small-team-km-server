@@ -1,21 +1,4 @@
 class SynchronousController < ApplicationController
-  def handshake
-    uuid = UUIDTools::UUID.random_create.to_s
-    count = current_user.notes.count
-    render :json=>{:syn_task_uuid=>uuid,:note_count=>count}
-  end
-
-  # note.updated_at.to_i 秒数
-  def compare
-    note_uuid = params[:note_uuid]
-    syn_task_uuid = params[:syn_task_uuid]
-    client_note_updated_at = params[:updated_at].to_i
-    result_hash = Note.compare(syn_task_uuid,note_uuid,client_note_updated_at)
-    p "compare note_uuid #{note_uuid}"
-    p "compare #{result_hash}"
-    render :json=>result_hash
-  end
-
   def push
     note = Note.find_by_uuid(params[:note][:uuid])
     if note.blank?
@@ -40,9 +23,34 @@ class SynchronousController < ApplicationController
     render :text=>"success"
   end
 
+  def pull
+    note = Note.find_by_uuid(params[:uuid])
+    res = {
+      :uuid=>note.uuid,
+      :content=>note.content,
+      :kind=>note.kind,
+      :is_removed=>note.is_removed ? 1:0,
+      :updated_at=>note.updated_at.to_i,
+      :attachment_url=>note.attachment.url,
+      :current_server_time=>Time.now.to_i
+    }
+    render :json=>res
+  end
+
   def get_next
     syn_taks_uuid = params[:syn_taks_uuid]
     res = SynRecord.get_next(syn_taks_uuid,current_user)
     render :json=>res
+  end
+
+  def detail_meta
+    time = Time.now.to_i
+    last_syn_server_meta_updated_time = params[:last_syn_server_meta_updated_time]
+    notes = current_user.notes.where("updated_at > ?",Time.at(last_syn_server_meta_updated_time))
+    res = notes.map{|note|{:uuid=>note.uuid,:server_updated_time=>note.updated_at.to_i}}
+    render :json=>{
+      :last_syn_server_meta_updated_time=>time,
+      :notes=>res
+    }
   end
 end

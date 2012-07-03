@@ -45,8 +45,8 @@ class SynchronousController < ApplicationController
 
   def detail_meta
     time = Time.now.to_i
-    last_syn_server_meta_updated_time = params[:last_syn_server_meta_updated_time]
-    notes = current_user.notes.where("updated_at > ?",Time.at(last_syn_server_meta_updated_time))
+    last_syn_server_meta_updated_time = params[:last_syn_server_meta_updated_time].to_i
+    notes = current_user.notes.where("notes.updated_at > ?",Time.at(last_syn_server_meta_updated_time))
     res = notes.map{|note|{:uuid=>note.uuid,:server_updated_time=>note.updated_at.to_i}}
     render :json=>{
       :last_syn_server_meta_updated_time=>time,

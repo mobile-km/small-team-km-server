@@ -1,7 +1,7 @@
-require 'readability'
+require 'nokogiri'
 
 class RemotePage
-  attr_reader :content, :title, :url
+  attr_reader :content, :title, :url, :title
 
   def initialize uri
     @uri = uri
@@ -52,18 +52,40 @@ class RemotePage
 
   def process &block
     unless @raw.blank? && @type.nil?
-      # @content = Readability::Document.new(@raw,
-      #                                      :tags               => %w[p img a],
-      #                                      :attributes         => %w[src href],
-      #                                      :remove_empty_nodes => true).content
 
-      @content = @raw
+      @content = sanitize_html @raw
     end
 
     block.call(self) if block
   end
 
-  class InvalidURLError < StandardError; end
-  class ContentTypeError < StandardError; end
+  def sanitize_html html_string
+    content_buffer = Nokogiri::HTML.parse(@raw)
+
+    @title = content_buffer.css('title').text
+
+    content_buffer.xpath('//style' ,
+                         '//script',
+                         '//form'  ,
+                         '//button',
+                         '//comment()').remove
+
+    content_buffer.xpath('//@*').each do |attr|
+      case attr.name
+      when 'href', 'src', 'alt'
+        next
+      else
+        attr.remove
+      end
+    end
+
+    [@url,
+     @title,
+     '================',
+     content_buffer.xpath('//body').inner_html].join("<br>")
+  end
+
+  class InvalidURLError       < StandardError; end
+  class ContentTypeError      < StandardError; end
   class ResourceNotFoundError < StandardError; end
 end

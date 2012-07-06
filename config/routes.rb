@@ -38,4 +38,11 @@ Voteapp::Application.routes.draw do
   post '/contacts/refuse_invite'   => 'contacts#refuse_invite'
   delete '/contacts/remove'        => 'contacts#remove'
   get '/contacts/refresh_status'   => 'contacts#refresh_status'
+
+  # -- 对话串
+  namespace :api do
+    post '/chats'                    => 'chats#create'
+    post '/chat_nodes'               => 'chat_nodes#create'
+    get '/pull_chats_and_chat_nodes' => 'chat#pull_chats_and_chat_nodes'
+  end
 end

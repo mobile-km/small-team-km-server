@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   include UserAvatarMethods
   include Note::UserMethods
   include Contact::UserMethods
+  include ChatMembership::UserMethods
+  include ChatNode::UserMethods
   
   has_one :online_record, :dependent => :destroy
   

@@ -6,11 +6,11 @@ class Chat < ActiveRecord::Base
 
 
   def to_hash
-    members = self.chat_members.map.each do |user|
+    members = self.chat_members.map do |user|
       {
         :user_id=>user.id,
         :user_name=>user.name,
-        :user_avatar=>user.avatar,
+        :user_avatar_url=>user.logo.url,
         :server_created_time=>user.created_at.to_i,
         :server_updated_time=>user.updated_at.to_i
       }

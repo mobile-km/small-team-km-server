@@ -43,6 +43,7 @@ Voteapp::Application.routes.draw do
   namespace :api do
     post '/chats'                    => 'chats#create'
     post '/chat_nodes'               => 'chat_nodes#create'
-    get '/pull_chats_and_chat_nodes' => 'chat#pull_chats_and_chat_nodes'
+    get '/pull_chats'                => 'chats#pull'
+    get '/pull_chat_nodes'           => 'chat_nodes#pull'
   end
 end

@@ -14,6 +14,7 @@ class ChatNode < ActiveRecord::Base
 
   def to_hash
     {
+      :server_chat_id=>self.chat_id,
       :server_chat_node_id=>self.id,
       :sender_id=>self.sender_id,
       :content=>self.content,

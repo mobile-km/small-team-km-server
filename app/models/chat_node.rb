@@ -7,6 +7,12 @@ class ChatNode < ActiveRecord::Base
   belongs_to :sender, :class_name=>"User"
   belongs_to :chat
 
+  validates :uuid, :presence => true
+  validates :content, :presence => true
+  validates :kind, :presence => true
+  validates :sender, :presence => true
+  validates :chat, :presence => true
+
   has_attached_file :attachment,
     :path => '/:class/:attachment/:id/:style/:filename',
     :url  => "http://storage.aliyun.com/#{OssManager::CONFIG["bucket"]}/:class/:attachment/:id/:style/:filename",
@@ -14,6 +20,7 @@ class ChatNode < ActiveRecord::Base
 
   def to_hash
     {
+      :uuid=>self.uuid,
       :server_chat_id=>self.chat_id,
       :server_chat_node_id=>self.id,
       :sender_id=>self.sender_id,

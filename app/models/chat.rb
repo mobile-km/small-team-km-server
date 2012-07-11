@@ -4,6 +4,8 @@ class Chat < ActiveRecord::Base
 
   has_many :chat_nodes
 
+  validates :uuid, :presence => true
+
 
   def to_hash
     members = self.chat_members.map do |user|
@@ -16,6 +18,7 @@ class Chat < ActiveRecord::Base
       }
     end
     return {
+      :uuid=>self.uuid,
       :server_chat_id=>self.id,
       :server_created_time=>self.created_at.to_i,
       :server_updated_time=>self.updated_at.to_i,

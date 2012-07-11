@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120704084256) do
+ActiveRecord::Schema.define(:version => 20120711012619) do
 
   create_table "chat_memberships", :force => true do |t|
     t.integer  "chat_id"
@@ -30,11 +30,13 @@ ActiveRecord::Schema.define(:version => 20120704084256) do
     t.datetime "attachment_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "uuid"
   end
 
   create_table "chats", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "uuid"
   end
 
   create_table "contacts", :force => true do |t|

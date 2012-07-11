@@ -4,9 +4,10 @@ class Api::ChatsController < ApplicationController
     ids = params[:member_ids].split(",")
     ids << current_user.id
     ids.uniq!
-    chat = Chat.new(:chat_member_ids=>ids)
+    chat = Chat.new(:chat_member_ids=>ids,:uuid=>params[:uuid])
     if chat.save
       render :json=>{
+        :uuid=>chat.uuid,
         :server_chat_id=>chat.id,
         :server_created_time=>chat.created_at.to_i,
         :server_updated_time=>chat.updated_at.to_i

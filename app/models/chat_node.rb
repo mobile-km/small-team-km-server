@@ -8,8 +8,12 @@ class ChatNode < ActiveRecord::Base
   belongs_to :chat
 
   validates :uuid, :presence => true
-  validates :content, :presence => true
-  validates :kind, :presence => true
+
+  validates :content,
+    :presence => { :if=>Proc.new{|chat_node|chat_node.kind == Kind::TEXT} }
+  validates :kind, :presence => true,
+    :inclusion => [Kind::TEXT,Kind::IMAGE]
+
   validates :sender, :presence => true
   validates :chat, :presence => true
 

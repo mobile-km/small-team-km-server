@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   include Contact::UserMethods
   include ChatMembership::UserMethods
   include ChatNode::UserMethods
+  include Attitude::UserMethods
   
   has_one :online_record, :dependent => :destroy
   

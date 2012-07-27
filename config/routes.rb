@@ -45,5 +45,7 @@ Voteapp::Application.routes.draw do
     post '/chat_nodes'               => 'chat_nodes#create'
     get '/pull_chats'                => 'chats#pull'
     get '/pull_chat_nodes'           => 'chat_nodes#pull'
+    post '/attitudes/push'           => 'attitudes#push'
+    get '/attitudes/pull'            => 'attitudes#pull'
   end
 end

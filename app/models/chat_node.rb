@@ -22,6 +22,8 @@ class ChatNode < ActiveRecord::Base
     :url  => "http://storage.aliyun.com/#{OssManager::CONFIG["bucket"]}/:class/:attachment/:id/:style/:filename",
     :storage => :oss
 
+  has_many :attitudes
+
   def to_hash
     {
       :uuid=>self.uuid,

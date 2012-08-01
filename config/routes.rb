@@ -39,13 +39,17 @@ Voteapp::Application.routes.draw do
   delete '/contacts/remove'        => 'contacts#remove'
   get '/contacts/refresh_status'   => 'contacts#refresh_status'
 
-  # -- 对话串
   namespace :api do
+    # -- 对话串
     post '/chats'                    => 'chats#create'
     post '/chat_nodes'               => 'chat_nodes#create'
     get '/pull_chats'                => 'chats#pull'
     get '/pull_chat_nodes'           => 'chat_nodes#pull'
     post '/attitudes/push'           => 'attitudes#push'
     get '/attitudes/pull'            => 'attitudes#pull'
+
+    # -- 账号设置
+    post '/account/change_name'    => 'account#change_name'
+    post '/account/change_avatar'  => 'account#change_avatar'
   end
 end

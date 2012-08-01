@@ -59,7 +59,6 @@ a img {
 a em {
   font-family: "Microsoft Yahei","微软雅黑",Tahoma,Arial,Helvetica,STHeiti; }
 
-/*列表标签*/
 li ul, li ol {
   margin: 0; }
 
@@ -85,7 +84,6 @@ textarea {
   resize: none;
   font-family: "Microsoft Yahei","微软雅黑",Tahoma,Arial,Helvetica,STHeiti; }
 
-/*基础字体设置*/
 html {
   font-size: 100.01%; }
 
@@ -95,7 +93,6 @@ body {
   color: #222;
   font-family: "Microsoft Yahei","微软雅黑",Tahoma,Arial,Helvetica,STHeiti; }
 
-/*各级标题*/
 h1, h2, h3, h4, h5, h6 {
   font-weight: normal; }
 
@@ -129,7 +126,6 @@ h6 {
 h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {
   margin: 0; }
 
-/*文字相关元素标签*/
 p {
   margin: 0 0 1em; }
 
@@ -189,7 +185,6 @@ pre, code, tt {
   font: 1em 'andale mono', 'lucida console', monospace;
   line-height: 1.5; }
 
-/*列表标签*/
 li ul, li ol {
   margin: 0; }
 
@@ -211,7 +206,6 @@ dl dt {
 dd {
   margin-left: 1.5em; }
 
-/*表格*/
 table {
   margin-bottom: 1.4em; }
 
@@ -233,7 +227,6 @@ tfoot {
 caption {
   background: #eee; }
 
-/*杂项修饰*/
 .hide {
   display: none !important; }
 

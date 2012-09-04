@@ -5,9 +5,13 @@ worker_processes 3
 # 加载 超时设置 监听
 preload_app true
 timeout 60
-listen "9527"
 
-pid_file_name = "/home/mobile-km/small-team-km-server/tmp/unicorn-teamkn.pid"
+stderr_path(File.expand_path('../../log/unicorn-error.log',__FILE__))
+stdout_path(File.expand_path('../../log/unicorn.log',__FILE__))
+
+listen File.expand_path('../../tmp/unicorn-teamkn.sock',__FILE__), :backlog => 2048
+
+pid_file_name = File.expand_path('../../tmp/unicorn-teamkn.pid', __FILE__)
 pid pid_file_name
 
 # REE GC

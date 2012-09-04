@@ -10,7 +10,51 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120529013124) do
+ActiveRecord::Schema.define(:version => 20120723031324) do
+
+  create_table "attitudes", :force => true do |t|
+    t.integer  "chat_node_id"
+    t.integer  "user_id"
+    t.string   "kind"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "chat_memberships", :force => true do |t|
+    t.integer  "chat_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "chat_nodes", :force => true do |t|
+    t.integer  "sender_id"
+    t.integer  "chat_id"
+    t.string   "content"
+    t.string   "kind"
+    t.string   "attachment_file_name"
+    t.integer  "attachment_file_size"
+    t.string   "attachment_content_type"
+    t.datetime "attachment_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "uuid"
+  end
+
+  create_table "chats", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "uuid"
+  end
+
+  create_table "contacts", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "contact_user_id"
+    t.string   "message"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "notes", :force => true do |t|
     t.string   "uuid"
@@ -36,9 +80,13 @@ ActiveRecord::Schema.define(:version => 20120529013124) do
   add_index "online_records", ["key"], :name => "index_online_records_on_key"
   add_index "online_records", ["user_id"], :name => "index_online_records_on_user_id"
 
-  create_table "syn_records", :force => true do |t|
-    t.string   "syn_task_uuid"
-    t.string   "note_uuid"
+  create_table "slice_temp_files", :force => true do |t|
+    t.integer  "creator_id"
+    t.string   "file_name"
+    t.integer  "file_size"
+    t.string   "path"
+    t.integer  "saved_size"
+    t.integer  "saved_blob_num"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

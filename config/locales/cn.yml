@@ -1,0 +1,21 @@
+cn:
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            name:
+              too_short: 用户名最少需要 2 位字符
+              too_long: 用户名最长允许 20 位字符
+              invalid: 用户名只允许含有 数字，英文字符，中文字符
+              blank:  用户名不能为空
+              taken: 用户名已被占用
+            email:
+              invalid: 邮箱格式不符合要求
+              blank: 邮箱不能为空
+              taken: 邮箱已被占用
+            password:
+              confirmation: 确认密码和密码不相同
+              too_short: 密码最少需要 4 位字符
+              too_long: 密码最长允许 32 为字符
+              blank: 密码不能为空

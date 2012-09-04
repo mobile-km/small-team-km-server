@@ -16,11 +16,9 @@ class SignupController < ApplicationController
     if @user.save
       self.current_user = @user
       after_logged_in()
-      return redirect_to '/'
+      return render :json=>current_user.api0_json_hash
     end
-    
     error = @user.errors.first
-    flash[:error] = "#{error[0]} #{error[1]}"
-    return redirect_to '/signup'
+    render :json=>error[1],:status=>422
   end
 end

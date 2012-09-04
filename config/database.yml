@@ -15,3 +15,11 @@ test:
   username: root
   password: root
   host: localhost
+
+production:
+  adapter: mysql
+  encoding: utf8
+  database: small-team-km-server
+  username: root
+  password: root
+  host: localhost

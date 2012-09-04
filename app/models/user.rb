@@ -1,7 +1,12 @@
+# encoding: utf-8
 class User < ActiveRecord::Base
   include UserAuthMethods
   include UserAvatarMethods
   include Note::UserMethods
+  include Contact::UserMethods
+  include ChatMembership::UserMethods
+  include ChatNode::UserMethods
+  include Attitude::UserMethods
   
   has_one :online_record, :dependent => :destroy
   

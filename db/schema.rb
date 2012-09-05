@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120723031324) do
+ActiveRecord::Schema.define(:version => 20120905010339) do
 
   create_table "attitudes", :force => true do |t|
     t.integer  "chat_node_id"
@@ -52,6 +52,36 @@ ActiveRecord::Schema.define(:version => 20120723031324) do
     t.integer  "contact_user_id"
     t.string   "message"
     t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "data_items", :force => true do |t|
+    t.string   "title"
+    t.text     "content"
+    t.string   "url"
+    t.integer  "file_entity_id"
+    t.string   "kind"
+    t.integer  "data_list_id"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "data_lists", :force => true do |t|
+    t.integer  "creator_id"
+    t.string   "title"
+    t.string   "kind"
+    t.boolean  "public"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "file_entities", :force => true do |t|
+    t.string   "attach_file_name"
+    t.string   "attach_content_type"
+    t.integer  "attach_file_size"
+    t.datetime "attach_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -108,6 +138,13 @@ ActiveRecord::Schema.define(:version => 20120723031324) do
     t.datetime "last_login_time"
     t.boolean  "send_invite_email"
     t.integer  "reputation",                :default => 0,  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "watches", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "data_list_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -46,4 +46,5 @@ class User < ActiveRecord::Base
     self.hashed_password = self.encrypted_password(self.password)
   end
   
+  include DataList::UserMethods
 end

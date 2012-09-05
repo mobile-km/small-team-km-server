@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(:version => 20120905010339) do
     t.integer  "creator_id"
     t.string   "title"
     t.string   "kind"
-    t.boolean  "public"
+    t.boolean  "public",     :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -4,7 +4,7 @@ class CreateDataLists < ActiveRecord::Migration
       t.integer :creator_id
       t.string  :title
       t.string  :kind  # COLLECTION STEP
-      t.boolean :public  # true false
+      t.boolean :public, :default => false  # true false
       t.timestamps
     end
   end

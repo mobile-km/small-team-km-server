@@ -12,6 +12,7 @@ gem 'nokogiri'
 gem 'paperclip', '2.4.5'
 gem 'ruby-readability', :require => 'readability'
 gem 'uuidtools', :require => 'uuidtools'
+gem 'will_paginate', '~> 3.0'
 
 group :assets do
   gem 'sass-rails',   '~> 3.1.4'

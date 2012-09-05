@@ -51,5 +51,8 @@ Voteapp::Application.routes.draw do
     # -- 账号设置
     post '/account/change_name'    => 'account#change_name'
     post '/account/change_avatar'  => 'account#change_avatar'
+
+    # -- 列表
+    resources :data_lists
   end
 end

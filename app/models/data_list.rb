@@ -12,6 +12,16 @@ class DataList < ActiveRecord::Base
   scope :with_kind_collection, where(:kind => KIND_COLLECTION)
   scope :with_kind_step, where(:kind => KIND_STEP)
 
+  def to_hash
+    return {
+      :id         => self.id,
+      :creator_id => self.creator_id,
+      :title      => self.title,
+      :kind       => self.kind,
+      :public     => self.public?.to_s
+    }
+  end
+
   module UserMethods
     def self.included(base)
       base.has_many :data_lists,

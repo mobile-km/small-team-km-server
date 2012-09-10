@@ -13,6 +13,7 @@ gem 'paperclip', '2.4.5'
 gem 'ruby-readability', :require => 'readability'
 gem 'uuidtools', :require => 'uuidtools'
 gem 'will_paginate', '~> 3.0'
+gem "acts_as_list-rails3", "~> 0.0.4"
 
 group :assets do
   gem 'sass-rails',   '~> 3.1.4'

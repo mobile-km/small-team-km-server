@@ -3,7 +3,7 @@ class DataList < ActiveRecord::Base
   KIND_STEP       = 'STEP'
   KINDS = [ KIND_COLLECTION, KIND_STEP ]
 
-  has_many :data_items
+  has_many :data_items, :order => "position"
   belongs_to :creator, :class_name => 'User'
 
   validates :title, :presence => true
@@ -24,8 +24,21 @@ class DataList < ActiveRecord::Base
 
   # 创建列表项
   def create_item(kind, title, value)
-    # TODO
-    # 根据传入的kind来确定给什么字段赋值，统一封装来简化controller调用。
+    item = case kind
+    when DataItem::KIND_TEXT
+      self.data_items.create(:kind => DataItem::KIND_TEXT, :title => title, :content => value)
+    when DataItem::KIND_IMAGE
+      self.data_items.create(:kind => DataItem::KIND_IMAGE, :title => title, :file_entity => FileEntity.new(:attach => value))
+    when DataItem::KIND_URL
+      self.data_items.create(:kind => DataItem::KIND_URL, :title => title, :url => value)
+    end
+
+    if !item.valid?
+      raise DataItem::TitleRepeatError if item.errors.first[0] == :title && !item.title.blank?
+
+      raise DataItem::UrlRepeatError if item.errors.first[0] == :url && !item.url.blank?
+    end
+    item
   end
 
   module UserMethods

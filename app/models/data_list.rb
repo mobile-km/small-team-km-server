@@ -22,6 +22,12 @@ class DataList < ActiveRecord::Base
     }
   end
 
+  # 创建列表项
+  def create_item(kind, title, value)
+    # TODO
+    # 根据传入的kind来确定给什么字段赋值，统一封装来简化controller调用。
+  end
+
   module UserMethods
     def self.included(base)
       base.has_many :data_lists,
@@ -33,5 +39,4 @@ class DataList < ActiveRecord::Base
     module InstanceMethods
     end
   end
-
 end

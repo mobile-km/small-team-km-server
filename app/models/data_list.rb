@@ -52,4 +52,12 @@ class DataList < ActiveRecord::Base
     module InstanceMethods
     end
   end
+
+  define_index do
+    indexes title, :sortable => true
+    indexes data_items(:title)
+    indexes data_items(:content)
+
+    has creator_id
+  end
 end

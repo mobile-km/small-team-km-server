@@ -17,6 +17,7 @@ class Api::DataListsController < ApplicationController
   end
 
   def create
+    params[:data_list][:public] = (params[:data_list][:public] == "true")
     @data_list = current_user.data_lists.build(params[:data_list])
 
     if @data_list.save
@@ -34,5 +35,10 @@ class Api::DataListsController < ApplicationController
     else
       render :json => @data_list.errors[0][1], :status => 422
     end
+  end
+
+  def search_mine
+    data_lists = DataList.search(params[:query],:with=>{:creator_id=>current_user.id})
+    render :json => data_lists.map{|list|list.id}
   end
 end

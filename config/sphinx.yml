@@ -1,0 +1,25 @@
+development:
+  charset_type: zh_cn.utf-8
+  bin_path: /usr/local/coreseek/bin
+  charset_dictpath: /usr/local/mmseg3/etc
+  ngram_len: 0
+
+  searchd_file_path: /MINDPIN_MRS_DATA/teamkn_sphinx
+
+  searchd_log_file: /MINDPIN_MRS_DATA/logs/teamkn_searchd.log
+  query_log_file: /MINDPIN_MRS_DATA/logs/teamkn_searchd.query.log
+  pid_file: /MINDPIN_MRS_DATA/pids/teamkn_sphinx_searchd.pid
+  port: 9313
+
+production:
+  charset_type: zh_cn.utf-8
+  bin_path: /usr/local/coreseek/bin
+  charset_dictpath: /usr/local/mmseg3/etc
+  ngram_len: 0
+
+  searchd_file_path: /MINDPIN_MRS_DATA/teamkn_sphinx
+
+  searchd_log_file: /MINDPIN_MRS_DATA/logs/teamkn_searchd.log
+  query_log_file: /MINDPIN_MRS_DATA/logs/teamkn_searchd.query.log
+  pid_file: /MINDPIN_MRS_DATA/pids/teamkn_sphinx_searchd.pid
+  port: 9313

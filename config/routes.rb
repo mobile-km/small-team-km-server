@@ -53,6 +53,16 @@ Voteapp::Application.routes.draw do
     post '/account/change_avatar'  => 'account#change_avatar'
 
     # -- 列表
-    resources :data_lists
+    resources :data_lists, :shallow => true do
+      collection do
+        get :search_mine
+      end
+
+      resources :data_items do
+        member do
+          put :order
+        end
+      end
+    end
   end
 end

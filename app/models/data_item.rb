@@ -33,6 +33,7 @@ class DataItem < ActiveRecord::Base
       :id         => self.id,
       :title      => self.title,
       :kind       => self.kind,
+      :position   => self.position,
       :content    => self.content,
       :url        => self.url,
       :image_url  => self.file_entity.blank? ? "" : self.file_entity.attach.url

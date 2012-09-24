@@ -17,10 +17,16 @@ class DataList < ActiveRecord::Base
   def to_hash
     return {
       :id         => self.id,
-      :creator_id => self.creator_id,
       :title      => self.title,
       :kind       => self.kind,
-      :public     => self.public?.to_s
+      :public     => self.public?.to_s,
+      :creator => {
+        :id => self.creator.id,
+        :name => self.creator.name,
+        :avatar_url => self.creator.logo.url,
+        :server_created_time => self.creator.created_at.to_i,
+        :server_updated_time => self.creator.updated_at.to_i
+      }
     }
   end
 

@@ -57,7 +57,7 @@ class Api::DataListsController < ApplicationController
   end
 
   def watch_list
-    @data_lists = current_user.watch_data_lists.paginate(:page => params[:page],:per_page => params[:per_page]||20)
+    @data_lists = current_user.watched_list.paginate(:page => params[:page],:per_page => params[:per_page]||20)
     render(:json => @data_lists.map{ |data_list| data_list.to_hash })
   end
 
@@ -66,9 +66,9 @@ class Api::DataListsController < ApplicationController
 
     watch = (params[:watch] == 'true') ? true : false
     if watch
-      current_user.watch_data_list(data_list)
+      current_user.watch(data_list)
     else
-      current_user.unwatch_data_list(data_list)
+      current_user.unwatch(data_list)
     end
     render :status => 200
   end

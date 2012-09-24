@@ -91,9 +91,9 @@ describe '数据列表' do
         all_count = DataList.count
         public_count = DataList.public_timeline.length
 
-        all_count.should != 0
-        lifei_count.should != 0
-        public_count.should != 0
+        all_count.should_not == 0
+        lifei_count.should_not == 0
+        public_count.should_not == 0
 
         lifei_count.should == public_count
 
@@ -110,6 +110,8 @@ describe '数据列表' do
       end
 
       it 'public_timeline 以修改时间排序' do
+        lifei.data_lists.count.should_not == 0
+
         d1 = DataList.public_timeline[0]
         d2 = DataList.public_timeline[1]
 

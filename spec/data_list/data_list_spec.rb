@@ -85,6 +85,29 @@ describe '数据列表' do
         }.to raise_error(DataItem::UrlRepeatError)
         data_list.data_items.count.should == 1
       end
+
+      it '用户可以选择某个列表 不分享 或 分享，如果选择分享则列表进入 public_timeline' do
+        all_count = DataList.count
+        lifei_count = lifei.data_lists.count
+        public_count = DataList.public_timeline.length
+
+        all_count.should != 0
+        lifei_count.should != 0
+        public_count.should != 0
+
+        lifei_count.should == public_count
+
+        data_list = lifei.data_lists.last
+        data_list.update_attributes :public => false
+
+        DataList.public_timeline.length.should == public_count - 1 # 将一条改为不共享，公开的少了一条
+
+        ben7th.data_lists.create :title => '测试', :kind => 'COLLECTION', :public => true
+        ben7th.data_lists.create :title => '测试', :kind => 'COLLECTION', :public => false
+
+        DataList.count.should == all_count + 2
+        DataList.public_timeline.length.should == public_count # 又创建了一条公开的，数量和原来又一样了
+      end
     end
 
   end

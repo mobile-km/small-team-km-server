@@ -7,7 +7,12 @@ class Api::DataItemsController < ApplicationController
   end
 
   def index
-    render :json => @data_list.data_items.map{|data_item|data_item.to_hash}
+    json = {
+      :read => @data_list.read?(current_user),
+      :data_items => @data_list.data_items.map{|data_item|data_item.to_hash}
+    }
+    @data_list.read(current_user)
+    render :json => json
   end
 
   def create

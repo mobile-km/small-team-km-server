@@ -41,4 +41,35 @@ class Api::DataListsController < ApplicationController
     data_lists = DataList.search(params[:query],:with=>{:creator_id=>current_user.id})
     render :json => data_lists.map{|list|list.id}
   end
+
+  def share_setting
+    @data_list = current_user.data_lists.find_by_id(params[:id])
+    return render :status => 403 if @data_list.blank?
+
+    value = (params[:share] == "true") ? true : false
+    @data_list.update_attribute(:public, value)
+    render :status => 200
+  end
+
+  def public_timeline
+    @data_lists = DataList.public_timeline.paginate(:page => params[:page],:per_page => params[:per_page]||20)
+    render(:json => @data_lists.map{ |data_list| data_list.to_hash })
+  end
+
+  def watch_list
+    @data_lists = current_user.watch_data_lists.paginate(:page => params[:page],:per_page => params[:per_page]||20)
+    render(:json => @data_lists.map{ |data_list| data_list.to_hash })
+  end
+
+  def watch_setting
+    data_list = DataList.find(params[:id])
+
+    watch = (params[:watch] == 'true') ? true : false
+    if watch
+      current_user.watch_data_list(data_list)
+    else
+      current_user.unwatch_data_list(data_list)
+    end
+    render :status => 200
+  end
 end

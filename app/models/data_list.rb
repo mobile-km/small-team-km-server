@@ -5,6 +5,7 @@ class DataList < ActiveRecord::Base
 
   has_many :data_items, :order => "position"
   belongs_to :creator, :class_name => 'User'
+  has_many :data_list_readings
 
   validates :title, :presence => true
   validates :kind,  :presence => true, :inclusion => DataList::KINDS
@@ -41,6 +42,14 @@ class DataList < ActiveRecord::Base
     end
     self.touch
     item
+  end
+
+  def read(user)
+    self.data_list_readings.find_or_create_by_user_id(user.id)
+  end
+
+  def read?(user)
+    !self.data_list_readings.find_by_user_id(user.id).blank?
   end
 
   module UserMethods

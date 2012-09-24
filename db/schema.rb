@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120905010339) do
+ActiveRecord::Schema.define(:version => 20120924071056) do
 
   create_table "attitudes", :force => true do |t|
     t.integer  "chat_node_id"
@@ -64,6 +64,13 @@ ActiveRecord::Schema.define(:version => 20120905010339) do
     t.string   "kind"
     t.integer  "data_list_id"
     t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "data_list_readings", :force => true do |t|
+    t.integer  "data_list_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -87,8 +87,8 @@ describe '数据列表' do
       end
 
       it '用户可以选择某个列表 不分享 或 分享，如果选择分享则列表进入 public_timeline' do
+        lifei_count = lifei.data_lists.count # 这个要写在前面，否则数据不会创建
         all_count = DataList.count
-        lifei_count = lifei.data_lists.count
         public_count = DataList.public_timeline.length
 
         all_count.should != 0
@@ -121,6 +121,8 @@ describe '数据列表' do
         DataList.public_timeline[0].should == d2
         DataList.public_timeline[1].should == d1
       end
+
+      it 'public_timeline'
     end
 
   end

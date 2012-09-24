@@ -87,8 +87,8 @@ describe '数据列表' do
       end
 
       it '用户可以选择某个列表 不分享 或 分享，如果选择分享则列表进入 public_timeline' do
+        lifei_count = lifei.data_lists.count # 这个要写在前面，否则数据不会创建
         all_count = DataList.count
-        lifei_count = lifei.data_lists.count
         public_count = DataList.public_timeline.length
 
         all_count.should != 0
@@ -108,6 +108,21 @@ describe '数据列表' do
         DataList.count.should == all_count + 2
         DataList.public_timeline.length.should == public_count # 又创建了一条公开的，数量和原来又一样了
       end
+
+      it 'public_timeline 以修改时间排序' do
+        d1 = DataList.public_timeline[0]
+        d2 = DataList.public_timeline[1]
+
+        (d1.updated_at > d2.updated_at).should == true
+
+        Timecop.travel(Time.now + 1.hours)
+        d2.create_item('URL', 'ben7th的微博', 'http://weibo.com/ben7th')
+
+        DataList.public_timeline[0].should == d2
+        DataList.public_timeline[1].should == d1
+      end
+
+      it 'public_timeline'
     end
 
   end

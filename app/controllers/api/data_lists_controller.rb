@@ -48,7 +48,7 @@ class Api::DataListsController < ApplicationController
 
     value = (params[:share] == "true") ? true : false
     @data_list.update_attribute(:public, value)
-    render :status => 200
+    render :status => 200, :text =>""
   end
 
   def public_timeline
@@ -70,6 +70,6 @@ class Api::DataListsController < ApplicationController
     else
       current_user.unwatch(data_list)
     end
-    render :status => 200
+    render :status => 200, :text =>""
   end
 end

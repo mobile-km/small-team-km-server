@@ -6,6 +6,14 @@ class Api::DataItemsController < ApplicationController
     @data_list = DataList.find(params[:data_list_id]) if params[:data_list_id]
   end
 
+  before_filter :check_acl,:only=>[:create,:update,:destroy,:order]
+  def check_acl
+    data_list = @data_list || @data_item.data_list
+    if data_list.creator != current_user
+      render :status => 403,:text => '没有权限'
+    end
+  end
+
   def index
     json = {
       :read => @data_list.read?(current_user),

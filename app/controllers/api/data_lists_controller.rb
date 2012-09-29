@@ -54,11 +54,11 @@ class Api::DataListsController < ApplicationController
 
   def share_setting
     @data_list = current_user.data_lists.find_by_id(params[:id])
-    return render :status => 403 if @data_list.blank?
+    return render :status => 403, :text=>'' if @data_list.blank?
 
     value = (params[:share] == "true") ? true : false
     @data_list.update_attribute(:public, value)
-    render :status => 200, :text =>""
+    render :status => 200, :text =>''
   end
 
   def public_timeline

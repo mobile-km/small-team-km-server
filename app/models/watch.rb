@@ -2,6 +2,13 @@ class Watch < ActiveRecord::Base
   belongs_to :user
   belongs_to :data_list
 
+  after_save :set_data_list_delta_flag
+  after_destroy :set_data_list_delta_flag
+  def set_data_list_delta_flag
+    data_list.delta = true
+    data_list.save
+  end
+
   module UserMethods
     def self.included(base)
       base.has_many :watchs

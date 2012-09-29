@@ -22,6 +22,13 @@ class DataItem < ActiveRecord::Base
   validates :url,            :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_URL}},
     :uniqueness => {:scope => :data_list_id}
 
+  after_save :set_data_list_delta_flag
+  after_destroy :set_data_list_delta_flag
+  def set_data_list_delta_flag
+    data_list.delta = true
+    data_list.save
+  end
+
   # 列表项标题重复异常
   class TitleRepeatError < Exception; end;
 

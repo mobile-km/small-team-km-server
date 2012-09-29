@@ -7,6 +7,9 @@ class DataList < ActiveRecord::Base
   belongs_to :creator, :class_name => 'User'
   has_many :data_list_readings
 
+  has_many :watchs
+  has_many :watch_users, :through => :watchs, :source => :user
+
   validates :title, :presence => true
   validates :kind,  :presence => true, :inclusion => DataList::KINDS
 
@@ -76,5 +79,8 @@ class DataList < ActiveRecord::Base
     indexes data_items(:content)
 
     has creator_id
+    has public
+    has watchs(:user_id), :as => :watch_user_ids
+    set_property :delta => true
   end
 end

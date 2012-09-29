@@ -42,6 +42,16 @@ class Api::DataListsController < ApplicationController
     render :json => data_lists.map{|list|list.id}
   end
 
+  def search_public_timeline
+    data_lists = DataList.search(params[:query],:with=>{:public=>true})
+    render :json => data_lists.map{|list|list.id}
+  end
+
+  def search_mine_watch
+    data_lists = DataList.search(params[:query],:with_all=>{:watch_user_ids=>[current_user.id]})
+    render :json => data_lists.map{|list|list.id}
+  end
+
   def share_setting
     @data_list = current_user.data_lists.find_by_id(params[:id])
     return render :status => 403 if @data_list.blank?

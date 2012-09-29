@@ -29,7 +29,9 @@ class DataList < ActiveRecord::Base
         :avatar_url => self.creator.logo.url,
         :server_created_time => self.creator.created_at.to_i,
         :server_updated_time => self.creator.updated_at.to_i
-      }
+      },
+      :server_created_time => self.created_at.to_i,
+      :server_updated_time => self.updated_at.to_i
     }
   end
 

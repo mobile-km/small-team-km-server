@@ -29,6 +29,12 @@ class DataItem < ActiveRecord::Base
     data_list.save
   end
 
+  after_save :set_data_list_updated_at
+  after_destroy :set_data_list_updated_at
+  def set_data_list_updated_at
+    data_list.touch
+  end
+
   # 列表项标题重复异常
   class TitleRepeatError < Exception; end;
 

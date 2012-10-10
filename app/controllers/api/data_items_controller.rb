@@ -53,7 +53,7 @@ class Api::DataItemsController < ApplicationController
     @data_item.insert_at(insert_at)
     data_list.reload
     data_items = data_list.data_items.where("position >= #{@data_item.position}")
-    json => {
+    json = {
       :order => data_items.map{|item|{:id => item.id, :position => item.position}},
       :data_list => {
         :server_updated_time => data_list.updated_at.to_i

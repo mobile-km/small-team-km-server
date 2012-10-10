@@ -51,7 +51,6 @@ class DataList < ActiveRecord::Base
 
       raise DataItem::UrlRepeatError if item.errors.first[0] == :url && !item.url.blank?
     end
-    self.touch
     item
   end
 

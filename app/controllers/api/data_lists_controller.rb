@@ -30,7 +30,7 @@ class Api::DataListsController < ApplicationController
   def update
     @data_list = current_user.data_lists.find(params[:id])
 
-    if @data_list.update_attribute(:title, params[:title])
+    if @data_list.update_attributes(:title => params[:title], :public => (params[:public] == 'true'))
       render :json => @data_list.to_hash
     else
       render :json => @data_list.errors[0][1], :status => 422

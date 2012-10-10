@@ -43,7 +43,10 @@ class DataItem < ActiveRecord::Base
       :position   => self.position,
       :content    => self.content,
       :url        => self.url,
-      :image_url  => self.file_entity.blank? ? "" : self.file_entity.attach.url
+      :image_url  => self.file_entity.blank? ? "" : self.file_entity.attach.url,
+      :data_list => {
+        :server_updated_time => self.data_list.updated_at.to_i
+      }
     }
   end
 

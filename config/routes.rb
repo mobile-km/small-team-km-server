@@ -56,6 +56,15 @@ Voteapp::Application.routes.draw do
     resources :data_lists, :shallow => true do
       collection do
         get :search_mine
+        get :search_public_timeline
+        get :search_mine_watch
+        get :public_timeline
+        get :watch_list
+      end
+
+      member do
+        put :share_setting
+        put :watch_setting
       end
 
       resources :data_items do

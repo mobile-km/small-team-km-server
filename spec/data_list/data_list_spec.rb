@@ -129,16 +129,19 @@ describe '数据列表' do
         ben7th.data_lists.count.should == 0
 
         ben7th.watched_list.length.should == 0
-
         ben7th.watch lifei.data_lists[0]
+        ben7th.reload
         ben7th.watched_list.length.should == 1
         ben7th.watch lifei.data_lists[0]
+        ben7th.reload
         ben7th.watched_list.length.should == 1
 
         ben7th.watch lifei.data_lists[1]
+        ben7th.reload
         ben7th.watched_list.length.should == 2
 
         ben7th.unwatch lifei.data_lists[1]
+        ben7th.reload
         ben7th.watched_list.length.should == 1
       end
     end

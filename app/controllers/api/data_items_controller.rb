@@ -6,8 +6,21 @@ class Api::DataItemsController < ApplicationController
     @data_list = DataList.find(params[:data_list_id]) if params[:data_list_id]
   end
 
+  before_filter :check_acl,:only=>[:create,:update,:destroy,:order]
+  def check_acl
+    data_list = @data_list || @data_item.data_list
+    if data_list.creator != current_user
+      render :status => 403,:text => '没有权限'
+    end
+  end
+
   def index
-    render :json => @data_list.data_items.map{|data_item|data_item.to_hash}
+    json = {
+      :read => @data_list.read?(current_user),
+      :data_items => @data_list.data_items.map{|data_item|data_item.to_hash}
+    }
+    @data_list.read(current_user)
+    render :json => json
   end
 
   def create
@@ -25,17 +38,28 @@ class Api::DataItemsController < ApplicationController
   end
 
   def destroy
+    data_list = @data_item.data_list
     @data_item.destroy
-    render :status => 200
+    render :json => {
+      :data_list => {
+        :server_updated_time => data_list.updated_at.to_i
+      }
+    }
   end
 
   def order
     data_list = @data_item.data_list
     insert_at = data_list.data_items.find(params[:insert_at]).position
     @data_item.insert_at(insert_at)
+    data_list.reload
     data_items = data_list.data_items.where("position >= #{@data_item.position}")
-
-    render :json => data_items.map{|item|{:id => item.id, :position => item.position}}
+    json = {
+      :order => data_items.map{|item|{:id => item.id, :position => item.position}},
+      :data_list => {
+        :server_updated_time => data_list.updated_at.to_i
+      }
+    }
+    render :json => json
   rescue ActiveRecord::RecordNotFound => ex
     render :text=>"没有找到 ID 是 #{params[:insert_at]} 的 data_item",:status => 404
   end

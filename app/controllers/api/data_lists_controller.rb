@@ -30,7 +30,7 @@ class Api::DataListsController < ApplicationController
   def update
     @data_list = current_user.data_lists.find(params[:id])
 
-    if @data_list.update_attribute(:title, params[:title])
+    if @data_list.update_attributes(:title => params[:title], :public => (params[:public] == 'true'))
       render :json => @data_list.to_hash
     else
       render :json => @data_list.errors[0][1], :status => 422
@@ -40,5 +40,46 @@ class Api::DataListsController < ApplicationController
   def search_mine
     data_lists = DataList.search(params[:query],:with=>{:creator_id=>current_user.id})
     render :json => data_lists.map{|list|list.id}
+  end
+
+  def search_public_timeline
+    data_lists = DataList.search(params[:query],:with=>{:public=>true})
+    render :json => data_lists.map{|list|list.id}
+  end
+
+  def search_mine_watch
+    data_lists = DataList.search(params[:query],:with_all=>{:watch_user_ids=>[current_user.id]})
+    render :json => data_lists.map{|list|list.id}
+  end
+
+  def share_setting
+    @data_list = current_user.data_lists.find_by_id(params[:id])
+    return render :status => 403, :text=>'' if @data_list.blank?
+
+    value = (params[:share] == "true") ? true : false
+    @data_list.update_attribute(:public, value)
+    render :status => 200, :text =>''
+  end
+
+  def public_timeline
+    @data_lists = DataList.public_timeline.paginate(:page => params[:page],:per_page => params[:per_page]||20)
+    render(:json => @data_lists.map{ |data_list| data_list.to_hash })
+  end
+
+  def watch_list
+    @data_lists = current_user.watched_list.paginate(:page => params[:page],:per_page => params[:per_page]||20)
+    render(:json => @data_lists.map{ |data_list| data_list.to_hash })
+  end
+
+  def watch_setting
+    data_list = DataList.find(params[:id])
+
+    watch = (params[:watch] == 'true') ? true : false
+    if watch
+      current_user.watch(data_list)
+    else
+      current_user.unwatch(data_list)
+    end
+    render :status => 200, :text =>""
   end
 end

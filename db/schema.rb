@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120905010339) do
+ActiveRecord::Schema.define(:version => 20120928093352) do
 
   create_table "attitudes", :force => true do |t|
     t.integer  "chat_node_id"
@@ -68,6 +68,13 @@ ActiveRecord::Schema.define(:version => 20120905010339) do
     t.datetime "updated_at"
   end
 
+  create_table "data_list_readings", :force => true do |t|
+    t.integer  "data_list_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "data_lists", :force => true do |t|
     t.integer  "creator_id"
     t.string   "title"
@@ -75,6 +82,7 @@ ActiveRecord::Schema.define(:version => 20120905010339) do
     t.boolean  "public",     :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "delta",      :default => true,  :null => false
   end
 
   create_table "file_entities", :force => true do |t|

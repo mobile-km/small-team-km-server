@@ -22,6 +22,19 @@ class DataItem < ActiveRecord::Base
   validates :url,            :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_URL}},
     :uniqueness => {:scope => :data_list_id}
 
+  after_save :set_data_list_delta_flag
+  after_destroy :set_data_list_delta_flag
+  def set_data_list_delta_flag
+    data_list.delta = true
+    data_list.save
+  end
+
+  after_save :set_data_list_updated_at
+  after_destroy :set_data_list_updated_at
+  def set_data_list_updated_at
+    data_list.touch
+  end
+
   # 列表项标题重复异常
   class TitleRepeatError < Exception; end;
 
@@ -36,7 +49,10 @@ class DataItem < ActiveRecord::Base
       :position   => self.position,
       :content    => self.content,
       :url        => self.url,
-      :image_url  => self.file_entity.blank? ? "" : self.file_entity.attach.url
+      :image_url  => self.file_entity.blank? ? "" : self.file_entity.attach.url,
+      :data_list => {
+        :server_updated_time => self.data_list.updated_at.to_i
+      }
     }
   end
 

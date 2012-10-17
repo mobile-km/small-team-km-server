@@ -17,5 +17,13 @@ FactoryGirl.define do
       end
     end
 
+    trait :with_data_lists_and_items do
+      after_create do |user|
+        16.times do
+          Timecop.travel(Time.now + 1.hours)
+          user.data_lists << FactoryGirl.create(:data_list, :with_data_items, :kind => 'COLLECTION')
+        end
+      end
+    end
   end
 end

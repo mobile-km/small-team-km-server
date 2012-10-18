@@ -10,6 +10,9 @@ class DataList < ActiveRecord::Base
   has_many :watchs
   has_many :watch_users, :through => :watchs, :source => :user
 
+  belongs_to :forked_from, :class_name => 'DataList'
+  has_many :forks, :class_name => 'DataList', :foreign_key => :forked_from_id
+
   validates :title, :presence => true
   validates :kind,  :presence => true, :inclusion => DataList::KINDS
 
@@ -67,10 +70,39 @@ class DataList < ActiveRecord::Base
       base.has_many :data_lists,
                     :foreign_key => :creator_id
 
+      base.has_many :forked_data_lists,
+                    :class_name => "DataList",
+                    :conditions => "data_lists.forked_from_id is not null",
+                    :foreign_key => :creator_id
+
       base.send :include, InstanceMethods
     end
 
     module InstanceMethods
+      def fork(data_list)
+        # 创建对应的 data_list
+        forked_data_list = self.data_lists.create(
+          :title => data_list.title,
+          :kind => data_list.kind,
+          :public => false,
+          :forked_from => data_list
+        )
+        # 创建对应的 data_item
+        data_list.data_items.each do |data_item|
+          seed = data_item.get_or_create_seed
+
+          item = case data_item.kind
+          when DataItem::KIND_TEXT
+            forked_data_list.create_item(data_item.kind,data_item.title,data_item.content)
+          when DataItem::KIND_IMAGE
+            forked_data_list.create_item(data_item.kind,data_item.title,File.new(data_item.file_entity.attach.path,'r'))
+          when DataItem::KIND_URL
+            forked_data_list.create_item(data_item.kind,data_item.title,data_item.url)
+          end
+          item.get_or_create_seed
+        end
+        forked_data_list
+      end
     end
   end
 

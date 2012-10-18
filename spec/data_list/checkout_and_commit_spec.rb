@@ -25,6 +25,7 @@ describe '数据列表的多人编辑' do
     data_list_0.forks[0].should == fork_0
 
     wudi.fork data_list_0
+    data_list_0.reload
     data_list_0.forks.length.should == 2
     data_list_0.forks.include?(fork_0).should == true
     data_list_0.forks.include?(wudi.data_lists[-1]).should == true

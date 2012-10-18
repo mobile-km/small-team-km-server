@@ -78,4 +78,15 @@ class DataItem < ActiveRecord::Base
     end
   end
 
+  def get_or_create_seed
+    raise 'new_record is not support' if self.id.blank?
+
+    if self.seed.blank?
+      DataItem.where(:id=>self.id).update_all(:seed=>randstr)
+      self.reload
+    end
+
+    self.seed
+  end
+
 end

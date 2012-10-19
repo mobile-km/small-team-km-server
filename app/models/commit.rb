@@ -8,4 +8,12 @@ class Commit < ActiveRecord::Base
   def origin_item
     self.forked_data_list.forked_from.data_items.find_by_seed(self.seed)
   end
+
+  def ready?
+    self.forked_data_list.commits[0] == self
+  end
+
+  def conflict?
+    self.operation != OPERATION_CREATE && self.origin_item.blank?
+  end
 end

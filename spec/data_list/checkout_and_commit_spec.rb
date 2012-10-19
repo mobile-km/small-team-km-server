@@ -129,7 +129,7 @@ describe '数据列表的多人编辑' do
     committer_lifei.create_item('URL', '负伤的骑士的微博', 'http://weibo.com/fushang318')
     committer_lifei.remove_item forked_list_lifei.data_items[0]
     committer_lifei.update_item forked_list_lifei.data_items[1], 'google首页', 'http://google.com'
-    committer_lifei.updata_item forked_list_lifei.data_items.last, '负伤の骑士の微博', 'http://weibo.com/fushang318'
+    committer_lifei.update_item forked_list_lifei.data_items.last, '负伤の骑士の微博', 'http://weibo.com/fushang318'
 
     merger = DataListMerger.new(forked_list_lifei)
     merger.editor.should == lifei
@@ -151,25 +151,25 @@ describe '数据列表的多人编辑' do
     # ben7th接受第一项修改
     merger.next_commit.should == lifei_commits[0]
     merger.accept_next_commit
-    lifei_commits[1].ready?.should == true
-    lifei_commits[1].conflict?.should == false
-    lifei_commits[2].ready?.should == false
-    lifei_commits[3].ready?.should == false
-    lifei_commits[4].ready?.should == false
+    lifei_commits[1].reload.ready?.should == true
+    lifei_commits[1].reload.conflict?.should == false
+    lifei_commits[2].reload.ready?.should == false
+    lifei_commits[3].reload.ready?.should == false
+    lifei_commits[4].reload.ready?.should == false
 
     # ben7th拒绝第二项修改
     merger.next_commit.should == lifei_commits[1]
     merger.reject_next_commit
-    lifei_commits[2].ready?.should == true
-    lifei_commits[2].conflict?.should == false
-    lifei_commits[3].ready?.should == false
-    lifei_commits[4].ready?.should == false
+    lifei_commits[2].reload.ready?.should == true
+    lifei_commits[2].reload.conflict?.should == false
+    lifei_commits[3].reload.ready?.should == false
+    lifei_commits[4].reload.ready?.should == false
 
     merger.accept_next_commit # 2
     merger.accept_next_commit # 3
 
-    lifei_commits[4].ready?.should == true
-    lifei_commits[4].conflict?.should == true 
+    lifei_commits[4].reload.ready?.should == true
+    lifei_commits[4].reload.conflict?.should == true 
     # 以seed来判断，当该操作针对的 data_item 在 forked_from的data_list里
     # 找不到对应的 seed 相同的 data_item 时，就算该操作冲突
     # 此时UI上的处理是忽略之，直接继续跳到 merger.accept_next_commit
@@ -198,13 +198,14 @@ describe '数据列表的多人编辑' do
     committer_lifei.create_item('URL', '负伤的骑士的微博', 'http://weibo.com/fushang318')
     committer_lifei.remove_item forked_list_lifei.data_items[0]
     committer_lifei.update_item forked_list_lifei.data_items[1], 'google首页', 'http://google.com'
-    committer_lifei.updata_item forked_list_lifei.data_items.last, '负伤の骑士の微博', 'http://weibo.com/fushang318'
+    committer_lifei.update_item forked_list_lifei.data_items.last, '负伤の骑士の微博', 'http://weibo.com/fushang318'
 
     data_list_0.data_items[0].seed.should == forked_list_lifei.data_items[0].seed
     data_list_0.data_items[1].seed.should == forked_list_lifei.data_items[1].seed
     data_list_0.data_items[2].seed.should == forked_list_lifei.data_items[2].seed
 
     # ben7th接受了第一项修改，创建出了新的 data_item
+    merger = DataListMerger.new(forked_list_lifei)
     merger.accept_next_commit
     data_list_0.data_items[-1].seed.should == forked_list_lifei.data_items[-2].seed
   end

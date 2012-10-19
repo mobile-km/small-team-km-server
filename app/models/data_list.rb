@@ -136,7 +136,7 @@ class DataList < ActiveRecord::Base
           when DataItem::KIND_URL
             forked_data_list.create_item(data_item.kind,data_item.title,data_item.url)
           end
-          item.get_or_create_seed
+          item.update_attribute(:seed, seed)
         end
         forked_data_list
       end

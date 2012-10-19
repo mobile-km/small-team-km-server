@@ -12,6 +12,7 @@ class DataList < ActiveRecord::Base
 
   belongs_to :forked_from, :class_name => 'DataList'
   has_many :forks, :class_name => 'DataList', :foreign_key => :forked_from_id
+  has_many :commits, :foreign_key => :forked_data_list_id, :order => "commits.created_at asc"
 
   validates :title, :presence => true
   validates :kind,  :presence => true, :inclusion => DataList::KINDS
@@ -44,7 +45,8 @@ class DataList < ActiveRecord::Base
     when DataItem::KIND_TEXT
       self.data_items.create(:kind => DataItem::KIND_TEXT, :title => title, :content => value)
     when DataItem::KIND_IMAGE
-      self.data_items.create(:kind => DataItem::KIND_IMAGE, :title => title, :file_entity => FileEntity.new(:attach => value))
+      file_entity = (value.class == FileEntity) ? value : FileEntity.new(:attach => value)
+      self.data_items.create(:kind => DataItem::KIND_IMAGE, :title => title, :file_entity => file_entity)
     when DataItem::KIND_URL
       self.data_items.create(:kind => DataItem::KIND_URL, :title => title, :url => value)
     end
@@ -63,6 +65,41 @@ class DataList < ActiveRecord::Base
 
   def read?(user)
     !self.data_list_readings.find_by_user_id(user.id).blank?
+  end
+
+  def has_commits?
+    #!self.forks.map{|data_list|data_list.commits}.flatten.blank?
+    !Commit.find_by_sql(%`
+      select commits.* from commits
+        inner join data_lists as forked_data_lists on commits.forked_data_list_id = forked_data_lists.id
+        inner join data_lists as origin_data_lists on origin_data_lists.id = forked_data_lists.forked_from_id
+      where 
+        origin_data_lists.id = #{self.id}
+    `).blank?
+  end
+
+  def commit_users
+    User.find_by_sql(%`
+      select users.* from users
+        inner join data_lists on data_lists.creator_id = users.id
+        inner join commits on commits.forked_data_list_id = data_lists.id 
+      where
+        data_lists.forked_from_id = #{self.id}
+    `).uniq
+  end
+
+  def get_commits_of(user)
+    Commit.find_by_sql(%`
+      select commits.* from commits
+        inner join data_lists as forked_data_lists on commits.forked_data_list_id = forked_data_lists.id
+        inner join data_lists as origin_data_lists on origin_data_lists.id = forked_data_lists.forked_from_id
+      where 
+        origin_data_lists.id = #{self.id}
+          and
+        forked_data_lists.creator_id = #{user.id}
+      order by commits.created_at asc
+    `
+    )
   end
 
   module UserMethods
@@ -95,7 +132,7 @@ class DataList < ActiveRecord::Base
           when DataItem::KIND_TEXT
             forked_data_list.create_item(data_item.kind,data_item.title,data_item.content)
           when DataItem::KIND_IMAGE
-            forked_data_list.create_item(data_item.kind,data_item.title,File.new(data_item.file_entity.attach.path,'r'))
+            forked_data_list.create_item(data_item.kind,data_item.title,data_item.file_entity)
           when DataItem::KIND_URL
             forked_data_list.create_item(data_item.kind,data_item.title,data_item.url)
           end

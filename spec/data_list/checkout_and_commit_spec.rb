@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe '数据列表的多人编辑' do
-  let(:ben7th) {FactoryGirl.create :user, :with_data_lists}
-  let(:lifei)  {FactoryGirl.create :user, :with_data_lists}
-  let(:wudi)   {FactoryGirl.create :user, :with_data_lists}
+  let(:ben7th) {FactoryGirl.create :user, :with_data_lists_and_items}
+  let(:lifei)  {FactoryGirl.create :user, :with_data_lists_and_items}
+  let(:wudi)   {FactoryGirl.create :user, :with_data_lists_and_items}
 
   it '可以签出(checkout)他人的列表' do
   	data_list_0 = ben7th.data_lists[0]
@@ -57,7 +57,7 @@ describe '数据列表的多人编辑' do
     committer.remove_item forked_list.data_items.first
 
     # 编辑·修改项
-    committer.update_item forked_list.data_items.first, 'URL', 'google首页', 'http://google.com'
+    committer.update_item forked_list.data_items.first, 'google首页', 'http://google.com'
 
     committer.commits.length.should == 4
   end
@@ -78,11 +78,10 @@ describe '数据列表的多人编辑' do
     committer_lifei.create_item('URL', 'ben7th的微博', 'http://weibo.com/ben7th')
     committer_lifei.create_item('URL', '负伤的骑士的微博', 'http://weibo.com/fushang318')
     committer_lifei.remove_item forked_list_lifei.data_items[0]
-    committer_lifei.update_item forked_list_lifei.data_items[1], 'URL', 'google首页', 'http://google.com'
+    committer_lifei.update_item forked_list_lifei.data_items[1], 'google首页', '什么啊'
 
     committer_wudi.create_item('URL', '百度贴吧', 'http://tieba.baidu.com')
-    committer_wudi.remove_item forked_list_wudi.data_items[2]
-    committer_wudi.update_item forked_list_wudi.data_items[1], 'URL', '苹果', 'http://apple.com'
+    committer_wudi.update_item forked_list_wudi.data_items[1], '苹果', 'http://apple.com'
 
     data_list_0.has_commits?.should == true
 
@@ -96,28 +95,29 @@ describe '数据列表的多人编辑' do
     lifei_commits.length.should == 4
 
     wudi_commits = data_list_0.get_commits_of(wudi)
-    lifei_commits.length.should == 3
+    wudi_commits.length.should == 2
 
     # DataListCommit 对象的行为
     # 增
     lifei_commit_0 = lifei_commits[0]
-    lifei_commit_0.operation.should == :CREATE
+    lifei_commit_0.operation.should == Commit::OPERATION_CREATE
     lifei_commit_0.kind.should == DataItem::KIND_URL
     lifei_commit_0.title.should == 'ben7th的微博'
-    lifei_commit_0.content.should == 'http://weibo.com/ben7th'
+    lifei_commit_0.url.should == 'http://weibo.com/ben7th'
 
     # 删
     lifei_commit_2 = lifei_commits[2]
-    lifei_commit_2.operation.should == :REMOVE
-    lifei_commit_2.item.should == forked_list_lifei.data_items[0]
+    lifei_commit_2.operation.should == Commit::OPERATION_REMOVE
+    lifei_commit_2.origin_item.should == data_list_0.data_items.find_by_seed(forked_list_lifei.data_items[0].seed)
+
 
     # 改
     lifei_commit_3 = lifei_commits[3]
-    lifei_commit_2.operation.should == :UPDATE
-    lifei_commit_2.item.should == forked_list_lifei.data_items[1]
-    lifei_commit_0.kind.should == DataItem::KIND_URL
-    lifei_commit_0.title.should == 'google首页'
-    lifei_commit_0.content.should == 'http://google.com'
+    lifei_commit_3.operation.should == Commit::OPERATION_UPDATE
+    lifei_commit_3.origin_item.should == data_list_0.data_items.find_by_seed(forked_list_lifei.data_items[1].seed)
+    lifei_commit_3.kind.should == DataItem::KIND_TEXT
+    lifei_commit_3.title.should == 'google首页'
+    lifei_commit_3.content.should == '什么啊'
   end
 
   it '用户可以逐项接受或拒绝其他编辑者对于自己列表的修改' do
@@ -128,8 +128,8 @@ describe '数据列表的多人编辑' do
     committer_lifei.create_item('URL', 'ben7th的微博', 'http://weibo.com/ben7th')
     committer_lifei.create_item('URL', '负伤的骑士的微博', 'http://weibo.com/fushang318')
     committer_lifei.remove_item forked_list_lifei.data_items[0]
-    committer_lifei.update_item forked_list_lifei.data_items[1], 'URL', 'google首页', 'http://google.com'
-    committer_lifei.updata_item forked_list_lifei.data_items.last 'URL', '负伤の骑士の微博', 'http://weibo.com/fushang318'
+    committer_lifei.update_item forked_list_lifei.data_items[1], 'google首页', 'http://google.com'
+    committer_lifei.updata_item forked_list_lifei.data_items.last, '负伤の骑士の微博', 'http://weibo.com/fushang318'
 
     merger = DataListMerger.new(forked_list_lifei)
     merger.editor.should == lifei
@@ -197,8 +197,8 @@ describe '数据列表的多人编辑' do
     committer_lifei.create_item('URL', 'ben7th的微博', 'http://weibo.com/ben7th')
     committer_lifei.create_item('URL', '负伤的骑士的微博', 'http://weibo.com/fushang318')
     committer_lifei.remove_item forked_list_lifei.data_items[0]
-    committer_lifei.update_item forked_list_lifei.data_items[1], 'URL', 'google首页', 'http://google.com'
-    committer_lifei.updata_item forked_list_lifei.data_items.last 'URL', '负伤の骑士の微博', 'http://weibo.com/fushang318'
+    committer_lifei.update_item forked_list_lifei.data_items[1], 'google首页', 'http://google.com'
+    committer_lifei.updata_item forked_list_lifei.data_items.last, '负伤の骑士の微博', 'http://weibo.com/fushang318'
 
     data_list_0.data_items[0].seed.should == forked_list_lifei.data_items[0].seed
     data_list_0.data_items[1].seed.should == forked_list_lifei.data_items[1].seed

@@ -1,6 +1,6 @@
 class DataListMerger
   class NotForkDataListError<Exception;end
-  class CanNotAcceptconflictCommitError;end
+  class CanNotAcceptconflictCommitError<Exception;end
 
   attr_reader :forked_data_list, :forked_from
   def initialize(forked_data_list)

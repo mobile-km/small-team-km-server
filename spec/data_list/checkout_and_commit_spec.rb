@@ -173,7 +173,6 @@ describe '数据列表的多人编辑' do
     # 以seed来判断，当该操作针对的 data_item 在 forked_from的data_list里
     # 找不到对应的 seed 相同的 data_item 时，就算该操作冲突
     # 此时UI上的处理是忽略之，直接继续跳到 merger.accept_next_commit
-
     expect {
       merger.accept_next_commit
     }.to raise_error(DataListMerger::CanNotAcceptconflictCommitError)
@@ -207,6 +206,6 @@ describe '数据列表的多人编辑' do
     # ben7th接受了第一项修改，创建出了新的 data_item
     merger = DataListMerger.new(forked_list_lifei)
     merger.accept_next_commit
-    data_list_0.data_items[-1].seed.should == forked_list_lifei.data_items[-2].seed
+    data_list_0.reload.data_items[-1].seed.should == forked_list_lifei.data_items[-2].seed
   end
 end

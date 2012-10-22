@@ -88,4 +88,9 @@ class Api::DataListsController < ApplicationController
     forked_data_list = current_user.fork(data_list)
     render :json => forked_data_list.to_hash
   end
+
+  def forked_list
+    @data_lists = current_user.forked_data_lists.paginate(:page => params[:page],:per_page => params[:per_page]||20)
+    render(:json => @data_lists.map{ |data_list| data_list.to_hash })
+  end
 end

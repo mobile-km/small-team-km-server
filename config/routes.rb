@@ -60,6 +60,7 @@ Voteapp::Application.routes.draw do
         get :search_mine_watch
         get :public_timeline
         get :watch_list
+        get :forked_list
       end
 
       member do

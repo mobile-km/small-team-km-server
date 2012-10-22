@@ -82,4 +82,10 @@ class Api::DataListsController < ApplicationController
     end
     render :status => 200, :text =>""
   end
+
+  def fork
+    data_list = DataList.find(params[:id])
+    forked_data_list = current_user.fork(data_list)
+    render :json => forked_data_list.to_hash
+  end
 end

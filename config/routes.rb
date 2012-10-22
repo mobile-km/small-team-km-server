@@ -65,6 +65,7 @@ Voteapp::Application.routes.draw do
       member do
         put :share_setting
         put :watch_setting
+        put :fork
       end
 
       resources :data_items do

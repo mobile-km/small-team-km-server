@@ -27,6 +27,7 @@ class DataList < ActiveRecord::Base
       :title      => self.title,
       :kind       => self.kind,
       :public     => self.public?.to_s,
+      :has_commits => self.has_commits?.to_s,
       :creator => {
         :id => self.creator.id,
         :name => self.creator.name,

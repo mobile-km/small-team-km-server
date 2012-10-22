@@ -93,4 +93,9 @@ class Api::DataListsController < ApplicationController
     @data_lists = current_user.forked_data_lists.paginate(:page => params[:page],:per_page => params[:per_page]||20)
     render(:json => @data_lists.map{ |data_list| data_list.to_hash })
   end
+
+  def commit_meta_list
+    data_list = DataList.find(params[:id])
+    render :json => data_list.commit_meta_hash
+  end
 end

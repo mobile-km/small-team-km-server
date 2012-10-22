@@ -103,6 +103,21 @@ class DataList < ActiveRecord::Base
     )
   end
 
+  def commit_meta_hash
+    commit_users.map do |user|
+      {
+        :committer => {
+          :id => user.id,
+          :name => user.name,
+          :avatar_url => user.logo.url,
+          :server_created_time => user.created_at.to_i,
+          :server_updated_time => user.updated_at.to_i
+        },
+        :count => get_commits_of(user).length
+      }
+    end
+  end
+
   module UserMethods
     def self.included(base)
       base.has_many :data_lists,

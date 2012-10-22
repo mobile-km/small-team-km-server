@@ -67,6 +67,7 @@ Voteapp::Application.routes.draw do
         put :share_setting
         put :watch_setting
         put :fork
+        get :commit_meta_list
       end
 
       resources :data_items do

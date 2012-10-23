@@ -208,4 +208,46 @@ describe '数据列表的多人编辑' do
     merger.accept_next_commit
     data_list_0.reload.data_items[-1].seed.should == forked_list_lifei.data_items[-2].seed
   end
+
+  it '用户可以全部接受或拒绝其他编辑者对于自己列表的修改' do
+    data_list_0 = ben7th.data_lists[0]
+    lifei.fork data_list_0
+    forked_list_lifei = lifei.data_lists.last
+    committer_lifei = DataListCommitter.new(forked_list_lifei)
+    committer_lifei.create_item('URL', 'ben7th的微博', 'http://weibo.com/ben7th')
+    committer_lifei.create_item('URL', '负伤的骑士的微博', 'http://weibo.com/fushang318')
+    committer_lifei.remove_item forked_list_lifei.data_items[0]
+    committer_lifei.update_item forked_list_lifei.data_items[1], 'google首页', 'http://google.com'
+    committer_lifei.update_item forked_list_lifei.data_items.last, '负伤の骑士の微博', 'http://weibo.com/fushang318'
+
+    forked_list_lifei.reload
+    merger = DataListMerger.new(forked_list_lifei)
+    merger.accept_commits
+    data_list_0.reload
+    forked_list_lifei.reload
+
+    data_list_0.data_items.length.should == forked_list_lifei.data_items.length
+    data_list_0.data_items.last.title.should == forked_list_lifei.data_items.last.title
+    data_list_0.data_items.first.title.should == forked_list_lifei.data_items.first.title
+  end
+
+  it '用户可以全部接受或拒绝其他编辑者对于自己列表的修改' do
+    data_list_0 = ben7th.data_lists[0]
+    lifei.fork data_list_0
+    forked_list_lifei = lifei.data_lists.last
+    committer_lifei = DataListCommitter.new(forked_list_lifei)
+    committer_lifei.create_item('URL', 'ben7th的微博', 'http://weibo.com/ben7th')
+    committer_lifei.create_item('URL', '负伤的骑士的微博', 'http://weibo.com/fushang318')
+    committer_lifei.remove_item forked_list_lifei.data_items[0]
+    committer_lifei.update_item forked_list_lifei.data_items[1], 'google首页', 'http://google.com'
+    committer_lifei.update_item forked_list_lifei.data_items.last, '负伤の骑士の微博', 'http://weibo.com/fushang318'
+
+    merger = DataListMerger.new(forked_list_lifei)
+    merger.reject_commits
+    data_list_0.reload
+    forked_list_lifei.reload
+
+    data_list_0.data_items.length.should_not == forked_list_lifei.data_items.length
+    data_list_0.data_items.last.title.should_not == forked_list_lifei.data_items.last.title
+  end
 end

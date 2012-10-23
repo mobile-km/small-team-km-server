@@ -41,6 +41,28 @@ class DataListMerger
     @forked_data_list.reload
   end
 
+  def accept_commits
+    forked_from.data_items.each{|data_item|data_item.destroy}
+
+    forked_data_list.data_items.each do |data_item|
+      seed = data_item.get_or_create_seed
+
+      item = case data_item.kind
+      when DataItem::KIND_TEXT
+        forked_from.create_item(data_item.kind,data_item.title,data_item.content)
+      when DataItem::KIND_IMAGE
+        forked_from.create_item(data_item.kind,data_item.title,data_item.file_entity)
+      when DataItem::KIND_URL
+        forked_from.create_item(data_item.kind,data_item.title,data_item.url)
+      end
+      item.update_attribute(:seed, seed)
+    end
+    forked_data_list.commits.each{|commit|commit.destroy}
+  end
+
+  def reject_commits
+    forked_data_list.commits.each{|commit|commit.destroy}
+  end
 
   def _accept_next_commit__create
     commit = next_commit

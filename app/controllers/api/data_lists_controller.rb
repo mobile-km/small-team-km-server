@@ -140,7 +140,29 @@ class Api::DataListsController < ApplicationController
     commit = merger.next_commit
     render :json => {
       :next_commits_count => merger.get_commits.length,
-      :commit => commit.to_hash
+      :next_commit => commit.to_hash
+    }
+  end
+
+  def accept_next_commit
+    data_list = DataList.find(params[:id])
+    forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
+    merger = DataListMerger.new(forked_data_list)
+    commit = merger.accept_next_commit
+    render :json => {
+      :next_commits_count => merger.get_commits.length,
+      :next_commit => commit.to_hash
+    }
+  end
+
+  def reject_next_commit
+    data_list = DataList.find(params[:id])
+    forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
+    merger = DataListMerger.new(forked_data_list)
+    commit = merger.reject_next_commit
+    render :json => {
+      :next_commits_count => merger.get_commits.length,
+      :next_commit => commit.to_hash
     }
   end
 end

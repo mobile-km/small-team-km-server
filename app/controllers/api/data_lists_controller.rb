@@ -138,9 +138,8 @@ class Api::DataListsController < ApplicationController
     forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])    
     merger = DataListMerger.new(forked_data_list)
     commit = merger.next_commit
-    render :json
-    {
-      :commits_count => merger.get_commits.length,
+    render :json => {
+      :next_commits_count => merger.get_commits.length,
       :commit => commit.to_hash
     }
   end

@@ -69,6 +69,8 @@ Voteapp::Application.routes.draw do
         put :watch_setting
         put :fork
         get :commit_meta_list
+        put :accept_commits
+        put :reject_commits
       end
 
       resources :data_items do

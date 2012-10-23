@@ -107,4 +107,23 @@ class Api::DataListsController < ApplicationController
       :forked => forked_data_list.to_hash
     }
   end
+
+  def accept_commits
+    data_list = DataList.find(params[:id])
+    forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
+
+    merger = DataListMerger.new(forked_data_list)
+    merger.accept_commits
+    data_list.reload
+    render :json => data_list.to_hash
+  end
+
+  def reject_commits
+    data_list = DataList.find(params[:id])
+    forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
+
+    merger = DataListMerger.new(forked_data_list)
+    merger.reject_commits
+    render :json => data_list.to_hash
+  end
 end

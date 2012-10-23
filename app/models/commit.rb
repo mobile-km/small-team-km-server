@@ -27,6 +27,7 @@ class Commit < ActiveRecord::Base
       :url        => self.url,
       :seed       => self.seed,
       :image_url  => self.file_entity.blank? ? "" : self.file_entity.attach.url,
+      :conflict   => self.conflict?
     }
   end
 end

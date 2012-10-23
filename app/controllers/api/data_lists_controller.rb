@@ -98,4 +98,13 @@ class Api::DataListsController < ApplicationController
     data_list = DataList.find(params[:id])
     render :json => data_list.commit_meta_hash
   end
+
+  def diff
+    origin_data_list = DataList.find(params[:id])
+    forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
+    render :json => {
+      :origin => origin_data_list.to_hash,
+      :forked => forked_data_list.to_hash
+    }
+  end
 end

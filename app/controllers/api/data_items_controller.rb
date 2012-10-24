@@ -47,7 +47,23 @@ class Api::DataItemsController < ApplicationController
   end
 
   def update
+    if @data_item.data_list.forked_from.blank?
+      _update_for_origin_list
+    else
+      _update_for_forked_list
+    end
+  end
+
+  def _update_for_origin_list
     @data_item.update_by_params(params[:title], params[:value])
+    render :json => @data_item.to_hash
+  rescue Exception => ex
+    render :text => ex.message,:status => 422
+  end
+
+  def _update_for_forked_list
+    committer = DataListCommitter.new(@data_item.data_list)
+    committer.update_item(@data_item, params[:title], params[:value])
     render :json => @data_item.to_hash
   rescue Exception => ex
     render :text => ex.message,:status => 422

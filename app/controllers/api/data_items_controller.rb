@@ -70,8 +70,27 @@ class Api::DataItemsController < ApplicationController
   end
 
   def destroy
+    if @data_item.data_list.forked_from.blank?
+      _destroy_for_origin_list
+    else
+      _destroy_for_forked_list
+    end
+  end
+
+  def _destroy_for_origin_list
     data_list = @data_item.data_list
     @data_item.destroy
+    render :json => {
+      :data_list => {
+        :server_updated_time => data_list.updated_at.to_i
+      }
+    }
+  end
+
+  def _destroy_for_forked_list
+    data_list = @data_item.data_list
+    committer = DataListCommitter.new(data_list)
+    committer.remove_item(@data_item)
     render :json => {
       :data_list => {
         :server_updated_time => data_list.updated_at.to_i

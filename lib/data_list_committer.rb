@@ -20,6 +20,7 @@ class DataListCommitter
       :file_entity_id => item.file_entity_id,
       :kind => item.kind
     )
+    item
   end
 
   def update_item(data_item, title, value)

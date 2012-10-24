@@ -24,7 +24,23 @@ class Api::DataItemsController < ApplicationController
   end
 
   def create
+    if @data_list.forked_from.blank?
+      _create_for_origin_list
+    else
+      _create_for_forked_list
+    end
+  end
+
+  def _create_for_origin_list
     data_item = @data_list.create_item(params[:kind], params[:title], params[:value])
+    render :json => data_item.to_hash
+  rescue Exception => ex
+    render :text => ex.message,:status => 422
+  end
+
+  def _create_for_forked_list
+    committer = DataListCommitter.new(@data_list)
+    data_item = committer.create_item(params[:kind], params[:title], params[:value])
     render :json => data_item.to_hash
   rescue Exception => ex
     render :text => ex.message,:status => 422
@@ -63,4 +79,5 @@ class Api::DataItemsController < ApplicationController
   rescue ActiveRecord::RecordNotFound => ex
     render :text=>"没有找到 ID 是 #{params[:insert_at]} 的 data_item",:status => 404
   end
+
 end

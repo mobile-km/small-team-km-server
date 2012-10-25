@@ -71,7 +71,7 @@ Voteapp::Application.routes.draw do
         get :commit_meta_list
         put :accept_commits
         put :reject_commits
-        get :next_commits
+        get :next_commit
         put :accept_next_commit
         put :reject_next_commit
       end

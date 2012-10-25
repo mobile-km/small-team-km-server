@@ -115,7 +115,7 @@ class Api::DataListsController < ApplicationController
   end
 
   def accept_commits
-    data_list = DataList.find(params[:id])
+    origin_data_list = DataList.find(params[:id])
     forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
 
     merger = DataListMerger.new(forked_data_list)
@@ -125,7 +125,7 @@ class Api::DataListsController < ApplicationController
   end
 
   def reject_commits
-    data_list = DataList.find(params[:id])
+    origin_data_list = DataList.find(params[:id])
     forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
 
     merger = DataListMerger.new(forked_data_list)
@@ -133,8 +133,8 @@ class Api::DataListsController < ApplicationController
     render :json => data_list.to_hash
   end
 
-  def next_commits
-    data_list = DataList.find(params[:id])
+  def next_commit
+    origin_data_list = DataList.find(params[:id])
     forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])    
     merger = DataListMerger.new(forked_data_list)
     commit = merger.next_commit
@@ -145,7 +145,7 @@ class Api::DataListsController < ApplicationController
   end
 
   def accept_next_commit
-    data_list = DataList.find(params[:id])
+    origin_data_list = DataList.find(params[:id])
     forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
     merger = DataListMerger.new(forked_data_list)
     commit = merger.accept_next_commit
@@ -156,7 +156,7 @@ class Api::DataListsController < ApplicationController
   end
 
   def reject_next_commit
-    data_list = DataList.find(params[:id])
+    origin_data_list = DataList.find(params[:id])
     forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
     merger = DataListMerger.new(forked_data_list)
     commit = merger.reject_next_commit

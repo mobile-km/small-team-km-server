@@ -120,8 +120,8 @@ class Api::DataListsController < ApplicationController
 
     merger = DataListMerger.new(forked_data_list)
     merger.accept_commits
-    data_list.reload
-    render :json => data_list.to_hash
+    origin_data_list.reload
+    render :json => origin_data_list.to_hash
   end
 
   def reject_commits
@@ -130,7 +130,7 @@ class Api::DataListsController < ApplicationController
 
     merger = DataListMerger.new(forked_data_list)
     merger.reject_commits
-    render :json => data_list.to_hash
+    render :json => origin_data_list.to_hash
   end
 
   def next_commit

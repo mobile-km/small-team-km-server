@@ -25,7 +25,7 @@ class DataListMerger
     commit = next_commit
     raise CanNotAcceptconflictCommitError.new if commit.conflict?
 
-    case commit.operation
+    data_item = case commit.operation
     when Commit::OPERATION_CREATE
       _accept_next_commit__create
     when Commit::OPERATION_UPDATE
@@ -34,6 +34,7 @@ class DataListMerger
       _accept_next_commit__remove
     end
     @forked_data_list.reload
+    data_item
   end
 
   def reject_next_commit
@@ -79,6 +80,7 @@ class DataListMerger
     item.update_attribute(:seed, commit.seed)
 
     commit.destroy
+    item
   end
 
   def _accept_next_commit__update
@@ -95,6 +97,7 @@ class DataListMerger
     commit.origin_item.update_by_params(commit.title, value)
 
     commit.destroy
+    commit.origin_item
   end
 
   def _accept_next_commit__remove
@@ -104,6 +107,7 @@ class DataListMerger
     data_item.destroy
 
     commit.destroy
+    data_item
   end
 
 end

@@ -151,7 +151,10 @@ class Api::DataListsController < ApplicationController
     data_item = merger.accept_next_commit
     commit = merger.next_commit
     render :json => {
-      :data_item_server_id => data_item.id,
+      :data_item => {
+        :server_id => data_item.id,
+        :position => data_item.position
+      },
       :next_commits_count => merger.get_commits.length,
       :next_commit => commit.blank? ? {} : commit.to_hash
     }

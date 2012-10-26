@@ -17,6 +17,15 @@ class Api::DataItemsController < ApplicationController
   def index
     json = {
       :read => @data_list.read?(current_user),
+      :forked_from => @data_list.forked_from.blank? ? {} : {
+        :creator => {
+          :id => @data_list.forked_from.creator.id,
+          :name => @data_list.forked_from.creator.name,
+          :avatar_url => @data_list.forked_from.creator.logo.url,
+          :server_created_time => @data_list.forked_from.creator.created_at.to_i,
+          :server_updated_time => @data_list.forked_from.creator.updated_at.to_i
+        }
+      },
       :data_items => @data_list.data_items.map{|data_item|data_item.to_hash}
     }
     @data_list.read(current_user)

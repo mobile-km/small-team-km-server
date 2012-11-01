@@ -10,6 +10,11 @@ describe '数据列表的多人编辑' do
     data_list_1 = ben7th.data_lists[1]
 
     lifei.fork data_list_0
+
+    expect {
+      lifei.fork data_list_0
+    }.to raise_error(DataList::RepeatForkError)
+
     lifei.fork data_list_1
 
     fork_0 = lifei.data_lists[-2]

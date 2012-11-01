@@ -1,4 +1,6 @@
 class DataList < ActiveRecord::Base
+  class RepeatForkError<Exception;end
+
   KIND_COLLECTION = 'COLLECTION'
   KIND_STEP       = 'STEP'
   KINDS = [ KIND_COLLECTION, KIND_STEP ]
@@ -134,6 +136,9 @@ class DataList < ActiveRecord::Base
 
     module InstanceMethods
       def fork(data_list)
+        if !self.data_lists.find_by_forked_from_id(data_list.id).blank?
+          raise DataList::RepeatForkError.new
+        end
         # 创建对应的 data_list
         forked_data_list = self.data_lists.create(
           :title => data_list.title,

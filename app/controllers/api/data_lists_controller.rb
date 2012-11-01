@@ -37,6 +37,12 @@ class Api::DataListsController < ApplicationController
     end
   end
 
+  def destroy
+    data_list = DataList.find(params[:id])
+    data_list.destroy
+    render :text => 200
+  end
+
   def search_mine
     data_lists = DataList.search(params[:query],:with=>{:creator_id=>current_user.id})
     render :json => data_lists.map{|list|list.id}

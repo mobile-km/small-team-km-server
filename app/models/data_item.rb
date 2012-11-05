@@ -49,6 +49,7 @@ class DataItem < ActiveRecord::Base
       :position   => self.position,
       :content    => self.content,
       :url        => self.url,
+      :seed       => self.seed,
       :image_url  => self.file_entity.blank? ? "" : self.file_entity.attach.url,
       :data_list => {
         :server_updated_time => self.data_list.updated_at.to_i
@@ -76,6 +77,17 @@ class DataItem < ActiveRecord::Base
 
       raise DataItem::UrlRepeatError if self.errors.first[0] == :url && !self.url.blank?
     end
+  end
+
+  def get_or_create_seed
+    raise 'new_record is not support' if self.id.blank?
+
+    if self.seed.blank?
+      DataItem.where(:id=>self.id).update_all(:seed=>randstr)
+      self.reload
+    end
+
+    self.seed
   end
 
 end

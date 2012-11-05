@@ -60,11 +60,20 @@ Voteapp::Application.routes.draw do
         get :search_mine_watch
         get :public_timeline
         get :watch_list
+        get :forked_list
       end
 
       member do
+        get :diff
         put :share_setting
         put :watch_setting
+        put :fork
+        get :commit_meta_list
+        put :accept_commits
+        put :reject_commits
+        get :next_commit
+        put :accept_next_commit
+        put :reject_next_commit
       end
 
       resources :data_items do

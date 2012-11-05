@@ -37,6 +37,12 @@ class Api::DataListsController < ApplicationController
     end
   end
 
+  def destroy
+    data_list = DataList.find(params[:id])
+    data_list.destroy
+    render :text => 200
+  end
+
   def search_mine
     data_lists = DataList.search(params[:query],:with=>{:creator_id=>current_user.id})
     render :json => data_lists.map{|list|list.id}
@@ -81,5 +87,94 @@ class Api::DataListsController < ApplicationController
       current_user.unwatch(data_list)
     end
     render :status => 200, :text =>""
+  end
+
+  def fork
+    data_list = DataList.find(params[:id])
+    forked_data_list = current_user.fork(data_list)
+    render :json => forked_data_list.to_hash
+  end
+
+  def forked_list
+    @data_lists = current_user.forked_data_lists.paginate(:page => params[:page],:per_page => params[:per_page]||20)
+    render(:json => @data_lists.map{ |data_list| data_list.to_hash })
+  end
+
+  def commit_meta_list
+    data_list = DataList.find(params[:id])
+    render :json => data_list.commit_meta_hash
+  end
+
+  def diff
+    origin_data_list = DataList.find(params[:id])
+    forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
+    render :json => {
+      :origin => {
+        :data_list => origin_data_list.to_hash,
+        :data_items => origin_data_list.data_items.map{|data_item|data_item.to_hash}
+      },
+      :forked => {
+        :data_list => forked_data_list.to_hash,
+        :data_items => forked_data_list.data_items.map{|data_item|data_item.to_hash}
+      }
+    }
+  end
+
+  def accept_commits
+    origin_data_list = DataList.find(params[:id])
+    forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
+
+    merger = DataListMerger.new(forked_data_list)
+    merger.accept_commits
+    origin_data_list.reload
+    render :json => origin_data_list.to_hash
+  end
+
+  def reject_commits
+    origin_data_list = DataList.find(params[:id])
+    forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
+
+    merger = DataListMerger.new(forked_data_list)
+    merger.reject_commits
+    render :json => origin_data_list.to_hash
+  end
+
+  def next_commit
+    origin_data_list = DataList.find(params[:id])
+    forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])    
+    merger = DataListMerger.new(forked_data_list)
+    commit = merger.next_commit
+    render :json => {
+      :next_commits_count => merger.get_commits.length,
+      :next_commit => commit.blank? ? {} : commit.to_hash
+    }
+  end
+
+  def accept_next_commit
+    origin_data_list = DataList.find(params[:id])
+    forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
+    merger = DataListMerger.new(forked_data_list)
+    data_item = merger.accept_next_commit
+    commit = merger.next_commit
+    render :json => {
+      :data_item => {
+        :server_id => data_item.id,
+        :position => data_item.position
+      },
+      :next_commits_count => merger.get_commits.length,
+      :next_commit => commit.blank? ? {} : commit.to_hash
+    }
+  end
+
+  def reject_next_commit
+    origin_data_list = DataList.find(params[:id])
+    forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
+    merger = DataListMerger.new(forked_data_list)
+    merger.reject_next_commit
+    commit = merger.next_commit
+    render :json => {
+      :next_commits_count => merger.get_commits.length,
+      :next_commit => commit.blank? ? {} : commit.to_hash
+    }
   end
 end

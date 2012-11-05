@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120928093352) do
+ActiveRecord::Schema.define(:version => 20121018071906) do
 
   create_table "attitudes", :force => true do |t|
     t.integer  "chat_node_id"
@@ -47,6 +47,19 @@ ActiveRecord::Schema.define(:version => 20120928093352) do
     t.string   "uuid"
   end
 
+  create_table "commits", :force => true do |t|
+    t.integer  "forked_data_list_id"
+    t.string   "operation"
+    t.string   "seed"
+    t.string   "title"
+    t.text     "content"
+    t.string   "url"
+    t.integer  "file_entity_id"
+    t.string   "kind"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "contacts", :force => true do |t|
     t.integer  "user_id"
     t.integer  "contact_user_id"
@@ -66,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20120928093352) do
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "seed"
   end
 
   create_table "data_list_readings", :force => true do |t|
@@ -79,10 +93,11 @@ ActiveRecord::Schema.define(:version => 20120928093352) do
     t.integer  "creator_id"
     t.string   "title"
     t.string   "kind"
-    t.boolean  "public",     :default => false
+    t.boolean  "public",         :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "delta",      :default => true,  :null => false
+    t.boolean  "delta",          :default => true,  :null => false
+    t.integer  "forked_from_id"
   end
 
   create_table "file_entities", :force => true do |t|

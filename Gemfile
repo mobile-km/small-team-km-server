@@ -13,7 +13,6 @@ gem 'paperclip', '2.4.5'
 gem 'ruby-readability', :require => 'readability'
 gem 'uuidtools', :require => 'uuidtools'
 gem 'will_paginate', '~> 3.0'
-gem "acts_as_list-rails3", "~> 0.0.4"
 
 gem 'thinking-sphinx', '2.0.10'
 gem 'rmmseg-cpp'

@@ -1,6 +1,3 @@
-# acts_as_list-rails3 加载有问题，暂时只能手动 require 一下，才能用
-require 'acts_as_list'
-
 class DataItem < ActiveRecord::Base
   KIND_TEXT  = 'TEXT'
   KIND_IMAGE = 'IMAGE'
@@ -9,8 +6,6 @@ class DataItem < ActiveRecord::Base
 
   belongs_to :data_list
   belongs_to :file_entity
-
-  acts_as_list :scope => :data_list
 
   validates :title,        :presence => true,
     :uniqueness => {:scope => :data_list_id}
@@ -35,8 +30,20 @@ class DataItem < ActiveRecord::Base
     data_list.touch
   end
 
+  before_create :set_position_value
+  def set_position_value
+    data_item = self.data_list.data_items.last
+    if data_item.blank?
+      self.position = SortChar.g(nil, nil)
+    else
+      self.position = SortChar.g(data_item.position, nil)
+    end
+  end
+
   # 列表项标题重复异常
   class TitleRepeatError < Exception; end;
+  # 未知的 position 异常
+  class UnKnownPositionError < Exception; end
 
   # 列表项URL重复异常
   class UrlRepeatError < Exception; end;
@@ -90,4 +97,16 @@ class DataItem < ActiveRecord::Base
     self.seed
   end
 
+  def insert_at(left_position, right_position)
+    if !left_position.blank?
+      data_item = self.data_list.data_items.find_by_position(left_position)
+      raise DataItem::UnKnownPositionError.new if data_item.blank?
+    end
+    if !right_position.blank?
+      data_item = self.data_list.data_items.find_by_position(right_position)
+      raise DataItem::UnKnownPositionError.new if data_item.blank?
+    end
+    self.position = SortChar.g(left_position, right_position)
+    self.save
+  end
 end

@@ -109,11 +109,35 @@ class Api::DataItemsController < ApplicationController
   end
 
   def order
+    if @data_item.data_list.forked_from.blank?
+      _order_for_origin_list
+    else
+      _order_for_forked_list
+    end
+  end
+
+  def _order_for_origin_list
     @data_item.insert_at(params[:left_position], params[:right_position])
     data_list = @data_item.data_list
     data_list.reload
     json = {
-      :new_position => data_item.position,
+      :new_position => @data_item.position,
+      :data_list => {
+        :server_updated_time => data_list.updated_at.to_i
+      }
+    }
+    render :json => json
+  rescue DataItem::UnKnownPositionError => ex
+    render :text=>"没有找到 position 是 #{params[:left_position]} 或 #{params[:right_position]} 的 data_item",:status => 404
+  end
+
+  def _order_for_forked_list
+    data_list = @data_item.data_list
+    committer = DataListCommitter.new(data_list)
+    committer.insert_item(@data_item, params[:left_position], params[:right_position])
+    data_list.reload
+    json = {
+      :new_position => @data_item.position,
       :data_list => {
         :server_updated_time => data_list.updated_at.to_i
       }

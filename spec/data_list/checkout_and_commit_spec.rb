@@ -255,4 +255,91 @@ describe '数据列表的多人编辑' do
     data_list_0.data_items.length.should_not == forked_list_lifei.data_items.length
     data_list_0.data_items.last.title.should_not == forked_list_lifei.data_items.last.title
   end
+
+  context '迁出的列表支持排序操作' do
+    it '一般情况' do
+      data_list_0 = ben7th.data_lists[0]
+      lifei.fork data_list_0
+      forked_list_lifei = lifei.data_lists.last
+      committer_lifei = DataListCommitter.new(forked_list_lifei)
+
+
+      origin_old_0_item = data_list_0.data_items[0]
+      origin_old_1_item = data_list_0.data_items[1]
+      origin_old_2_item = data_list_0.data_items[2]
+
+      forked_old_0_item = forked_list_lifei.data_items[0]
+      forked_old_1_item = forked_list_lifei.data_items[1]
+      forked_old_2_item = forked_list_lifei.data_items[2]
+
+      left_position = forked_old_0_item.position
+      right_position = forked_old_1_item.position
+      committer_lifei.insert_item forked_old_2_item, left_position, right_position
+
+      forked_old_0_item.reload
+      forked_old_1_item.reload
+      forked_old_2_item.reload
+
+      [forked_old_0_item.position, forked_old_2_item.position, forked_old_1_item.position].sort.should ==
+        [forked_old_0_item.position, forked_old_2_item.position, forked_old_1_item.position]
+
+      [origin_old_0_item.position, origin_old_1_item.position, origin_old_2_item.position].sort.should ==
+        [origin_old_0_item.position, origin_old_1_item.position, origin_old_2_item.position]
+
+      merger = DataListMerger.new(forked_list_lifei)
+      merger.accept_next_commit
+
+      origin_old_0_item.reload
+      origin_old_1_item.reload
+      origin_old_2_item.reload
+
+      [origin_old_0_item.position, origin_old_2_item.position, origin_old_1_item.position].sort.should ==
+        [origin_old_0_item.position, origin_old_2_item.position, origin_old_1_item.position]
+    end
+
+    it 'position 冲突时的情况' do
+      data_list_0 = ben7th.data_lists[0]
+      lifei.fork data_list_0
+      forked_list_lifei = lifei.data_lists.last
+      committer_lifei = DataListCommitter.new(forked_list_lifei)
+
+
+      origin_old_0_item = data_list_0.data_items[-3]
+      origin_old_1_item = data_list_0.data_items[-2]
+      origin_old_2_item = data_list_0.data_items[-1]
+
+      forked_old_0_item = forked_list_lifei.data_items[-3]
+      forked_old_1_item = forked_list_lifei.data_items[-2]
+      forked_old_2_item = forked_list_lifei.data_items[-1]
+
+      left_position = forked_old_2_item.position
+      committer_lifei.insert_item forked_old_0_item, left_position, nil
+
+      forked_old_0_item.reload
+      forked_old_1_item.reload
+      forked_old_2_item.reload
+
+      [forked_old_1_item.position, forked_old_2_item.position, forked_old_0_item.position].sort.should ==
+        [forked_old_1_item.position, forked_old_2_item.position, forked_old_0_item.position]
+
+      origin_old_3_item = data_list_0.create_item('URL', '负伤的骑士的微博', 'http://weibo.com/fushang318')
+      origin_old_4_item = data_list_0.create_item('URL', 'ben7th的微博', 'http://weibo.com/ben7th')
+
+      [origin_old_0_item.position, origin_old_1_item.position, origin_old_2_item.position, origin_old_3_item.position, origin_old_4_item.position].sort.should ==
+        [origin_old_0_item.position, origin_old_1_item.position, origin_old_2_item.position, origin_old_3_item.position, origin_old_4_item.position]
+
+      
+      merger = DataListMerger.new(forked_list_lifei)
+      merger.accept_next_commit
+
+      origin_old_0_item.reload
+      origin_old_1_item.reload
+      origin_old_2_item.reload
+      origin_old_3_item.reload
+      origin_old_4_item.reload
+
+      [origin_old_1_item.position, origin_old_2_item.position, origin_old_3_item.position, origin_old_0_item.position, origin_old_4_item.position].sort.should ==
+        [origin_old_1_item.position, origin_old_2_item.position, origin_old_3_item.position, origin_old_0_item.position, origin_old_4_item.position]
+    end
+  end
 end

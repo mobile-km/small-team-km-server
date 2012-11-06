@@ -50,6 +50,24 @@ class DataListCommitter
     @forked_list.commits.create(:operation => Commit::OPERATION_REMOVE, :seed => seed)
   end
 
+  def insert_item(data_item, left_position, right_position)
+    raise '参数 data_item 不是 forked_list 的条目' if !@forked_list.data_items.reload.include?(data_item)    
+
+    data_item.insert_at(left_position, right_position)
+
+    # 创建 commit
+    @forked_list.commits.create(
+      :operation => Commit::OPERATION_ORDER,
+      :seed => data_item.seed, 
+      :title => data_item.title, 
+      :content => data_item.content,
+      :url => data_item.url,
+      :file_entity_id => data_item.file_entity_id,
+      :kind => data_item.kind,
+      :position => data_item.position
+    )
+  end
+
   def commits
     @forked_list.commits
   end

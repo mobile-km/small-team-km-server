@@ -2,6 +2,7 @@ class Commit < ActiveRecord::Base
   OPERATION_CREATE = 'CREATE'
   OPERATION_UPDATE = 'UPDATE'
   OPERATION_REMOVE = 'REMOVE'
+  OPERATION_ORDER = 'ORDER'
 
   belongs_to :forked_data_list, :class_name => "DataList"
   belongs_to :file_entity
@@ -27,7 +28,8 @@ class Commit < ActiveRecord::Base
       :url        => self.url,
       :seed       => self.seed,
       :image_url  => self.file_entity.blank? ? "" : self.file_entity.attach.url,
-      :conflict   => self.conflict?
+      :conflict   => self.conflict?,
+      :position   => self.position
     }
   end
 end

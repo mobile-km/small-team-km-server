@@ -32,6 +32,8 @@ class DataListMerger
       _accept_next_commit__update
     when Commit::OPERATION_REMOVE
       _accept_next_commit__remove
+    when Commit::OPERATION_ORDER
+      _accept_next_commit__order
     end
     @forked_data_list.reload
     data_item
@@ -103,9 +105,29 @@ class DataListMerger
   def _accept_next_commit__remove
     commit = next_commit
 
-    data_item = forked_from.data_items.find_by_seed(commit.seed)
+    data_item = commit.origin_item
     data_item.destroy
 
+    commit.destroy
+    data_item
+  end
+
+  def _accept_next_commit__order
+    commit = next_commit
+
+    data_item = commit.origin_item
+
+    position_data_item = @forked_from.data_items.find_by_position(commit.position)
+    if position_data_item.blank?
+      data_item.position = commit.position
+      data_item.save
+    elsif position_data_item != data_item
+      data_items = @forked_from.data_items
+      index = data_items.index(position_data_item)
+      right_data_item = data_items[index+1]
+      right_position = right_data_item.blank? ? nil : right_data_item.position
+      data_item.insert_at(commit.position, right_position)
+    end
     commit.destroy
     data_item
   end

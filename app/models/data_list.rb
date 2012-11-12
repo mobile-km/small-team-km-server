@@ -30,7 +30,7 @@ class DataList < ActiveRecord::Base
       :kind       => self.kind,
       :public     => self.public?.to_s,
       :has_commits => self.has_commits?.to_s,
-      :forked_from_id => self.forked_from.blank? ? nil : self.forked_from_id,
+      :forked_from_id => self.forked_from_id,
       :creator => {
         :id => self.creator.id,
         :name => self.creator.name,

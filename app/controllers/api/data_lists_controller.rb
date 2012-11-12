@@ -177,4 +177,14 @@ class Api::DataListsController < ApplicationController
       :next_commit => commit.blank? ? {} : commit.to_hash
     }
   end
+
+  def accept_rest_commits
+    origin_data_list = DataList.find(params[:id])
+    forked_data_list = origin_data_list.forks.find_by_creator_id(params[:committer_id])
+
+    merger = DataListMerger.new(forked_data_list)
+    merger.accept_rest_commits
+    origin_data_list.reload
+    render :json => origin_data_list.to_hash
+  end
 end

@@ -67,6 +67,27 @@ class DataListMerger
     forked_data_list.commits.each{|commit|commit.destroy}
   end
 
+  def accept_rest_commits
+    @forked_data_list.commits.each do |commit|
+      if commit.conflict?
+        commit.destroy
+        next
+      end
+
+      case commit.operation
+      when Commit::OPERATION_CREATE
+        _accept_next_commit__create
+      when Commit::OPERATION_UPDATE
+        _accept_next_commit__update
+      when Commit::OPERATION_REMOVE
+        _accept_next_commit__remove
+      when Commit::OPERATION_ORDER
+        _accept_next_commit__order
+      end
+
+    end
+  end
+
   def _accept_next_commit__create
     commit = next_commit
 

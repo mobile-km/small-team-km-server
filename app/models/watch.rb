@@ -26,8 +26,8 @@ class Watch < ActiveRecord::Base
       self.watchs.find_or_create_by_data_list_id(data_list.id)
     end
 
-    def unwatch(data_list)
-      watch = self.watchs.find_by_data_list_id(data_list.id)
+    def unwatch(data_list_id)
+      watch = self.watchs.find_by_data_list_id(data_list_id)
       watch.destroy if !watch.blank?
     end
   end

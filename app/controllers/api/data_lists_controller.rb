@@ -78,13 +78,12 @@ class Api::DataListsController < ApplicationController
   end
 
   def watch_setting
-    data_list = DataList.find(params[:id])
-
     watch = (params[:watch] == 'true') ? true : false
     if watch
+      data_list = DataList.find(params[:id])
       current_user.watch(data_list)
     else
-      current_user.unwatch(data_list)
+      current_user.unwatch(params[:id])
     end
     render :status => 200, :text =>""
   end

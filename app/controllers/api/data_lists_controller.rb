@@ -73,8 +73,8 @@ class Api::DataListsController < ApplicationController
   end
 
   def watch_list
-    @data_lists = current_user.watched_list.paginate(:page => params[:page],:per_page => params[:per_page]||20)
-    render(:json => @data_lists.map{ |data_list| data_list.to_hash })
+    watchs = current_user.watchs.paginate(:page => params[:page],:per_page => params[:per_page]||20)
+    render(:json => watchs.map {|watch| watch.data_list_hash})
   end
 
   def watch_setting

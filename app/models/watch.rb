@@ -9,6 +9,13 @@ class Watch < ActiveRecord::Base
     data_list.save
   end
 
+  def data_list_hash
+    if data_list.blank?
+      return { :id => data_list_id, :is_removed => true }
+    end
+    data_list.to_hash
+  end
+
   module UserMethods
     def self.included(base)
       base.has_many :watchs

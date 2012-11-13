@@ -32,6 +32,7 @@ class DataList < ActiveRecord::Base
       :has_commits => self.has_commits?.to_s,
       :forked_from_id => self.forked_from_id,
       :forked_from_is_removed => self.forked_from_is_removed?.to_s,
+      :is_removed => false,
       :creator => {
         :id => self.creator.id,
         :name => self.creator.name,

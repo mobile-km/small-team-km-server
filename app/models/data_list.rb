@@ -31,6 +31,7 @@ class DataList < ActiveRecord::Base
       :public     => self.public?.to_s,
       :has_commits => self.has_commits?.to_s,
       :forked_from_id => self.forked_from_id,
+      :forked_from_is_removed => self.forked_from_is_removed?.to_s,
       :creator => {
         :id => self.creator.id,
         :name => self.creator.name,
@@ -80,6 +81,10 @@ class DataList < ActiveRecord::Base
       where 
         origin_data_lists.id = #{self.id}
     `).blank?
+  end
+
+  def forked_from_is_removed?
+    !self.forked_from_id.blank? && self.forked_from.blank?
   end
 
   def commit_users

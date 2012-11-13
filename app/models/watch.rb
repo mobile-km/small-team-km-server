@@ -5,8 +5,10 @@ class Watch < ActiveRecord::Base
   after_save :set_data_list_delta_flag
   after_destroy :set_data_list_delta_flag
   def set_data_list_delta_flag
-    data_list.delta = true
-    data_list.save
+    if !data_list.blank?
+      data_list.delta = true
+      data_list.save
+    end
   end
 
   def data_list_hash

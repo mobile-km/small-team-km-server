@@ -88,6 +88,10 @@ class DataListMerger
     end
   end
 
+  def reject_rest_commits
+    reject_commits
+  end
+
   def _accept_next_commit__create
     commit = next_commit
 

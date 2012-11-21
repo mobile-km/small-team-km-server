@@ -20,4 +20,15 @@ class Api::AccountController < ApplicationController
       render :text=>error[1],:status=>422
     end
   end
+
+  def change_show_tip
+    is_show_tip = (params[:is_show_tip] == 'true')
+    current_user.is_show_tip = is_show_tip
+    if current_user.save
+      render :json=>current_user.api0_json_hash
+    else
+      error = current_user.errors.first
+      render :text=>error[1],:status=>422
+    end
+  end
 end

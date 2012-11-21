@@ -38,6 +38,7 @@ module UserAuthMethods
         :id           => self.id,
         :name         => self.name,
         :sign         => self.sign || '',
+        :is_show_tip  => self.is_show_tip,
         :avatar_url  => self.logo.url
       }
     end

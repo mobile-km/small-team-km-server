@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121106032100) do
+ActiveRecord::Schema.define(:version => 20121121082838) do
 
   create_table "attitudes", :force => true do |t|
     t.integer  "chat_node_id"
@@ -146,10 +146,10 @@ ActiveRecord::Schema.define(:version => 20121106032100) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "name",                      :default => "", :null => false
-    t.string   "hashed_password",           :default => "", :null => false
-    t.string   "salt",                      :default => "", :null => false
-    t.string   "email",                     :default => "", :null => false
+    t.string   "name",                      :default => "",   :null => false
+    t.string   "hashed_password",           :default => "",   :null => false
+    t.string   "salt",                      :default => "",   :null => false
+    t.string   "email",                     :default => "",   :null => false
     t.string   "sign"
     t.string   "activation_code"
     t.string   "logo_file_name"
@@ -161,9 +161,10 @@ ActiveRecord::Schema.define(:version => 20121106032100) do
     t.datetime "reset_password_code_until"
     t.datetime "last_login_time"
     t.boolean  "send_invite_email"
-    t.integer  "reputation",                :default => 0,  :null => false
+    t.integer  "reputation",                :default => 0,    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_show_tip",               :default => true
   end
 
   create_table "watches", :force => true do |t|

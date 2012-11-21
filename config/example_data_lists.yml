@@ -1,20 +1,52 @@
 COLLECTION:
-  列表一:
+  TEAMKN 的主要用途:
     -
-      title: 条目一标题
-      content: 条目一内容
+      title: 别人写好攻略, 你来DIY
+      content: 按部就班, 轻松学做菜, 打BOSS, 排除电脑小故障
     -
-      title: 条目二标题
-      content: 条目二内容
+      title: High的感觉,收入云端永不忘
+      content: 你爱看的电影, 好玩的去处, 收集列表存起来!
+    -
+      title: 守候列表, 耐心等它慢慢成长
+      content: 大家一起提建议, 列表自己也会长高!
+    -
+      title: 给别人的列表"增加营养"
+      content: 签出你感兴趣的列表, 补充更棒的条目, 把列表"顶起来"~~
 STEP:
-  列表二:
+  如何使用 TEAMKN?:
     -
-      title: 条目一标题
-      content: 条目一内容
+      title: 打开 TEAMKN 以后我该做些什么?
+      content: 开始阅读帮助列表
+    -
+      title: 接下来,四处转转!
+      content: 点击标题栏, 到公共列表里去
+    -
+      title: 看看别人在干啥?
+      content: 在公共列表里, 你可以浏览别人的列表
+    -
+      title: 展开列表,仔细观察...
+      content: 公共列表里点击某个列表, 可以看到详细内容
+    -
+      title: 收藏你喜欢的!
+      content: 喜欢某个列表, 就点击五角星收藏它!
+    -
+      title: 回"家"看看...
+      content: 点击标题栏, 到我的列表里去
+    -
+      title: 自己写两笔
+      content: 点击 [+新列表] 按钮, 创建自己的列表
+    -
+      title: 写具体一些...
+      content: 点击 (+新条目) 按钮, 创建新的列表条目
+    -
+      title: 好东西分享给大家
+      content: 点击 [分享] 按钮, 让大家都来看!
     -
       title: 条目二标题
       content: 条目二内容
     -
-      title: 条目三标题
-      content: 条目三内容
-
+      title: 条目二标题
+      content: 条目二内容
+    -
+      title: 条目二标题
+      content: 条目二内容

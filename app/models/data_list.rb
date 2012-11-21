@@ -138,9 +138,29 @@ class DataList < ActiveRecord::Base
                     :foreign_key => :creator_id
 
       base.send :include, InstanceMethods
+      base.after_create :create_example_data_lists
     end
 
     module InstanceMethods
+      def create_example_data_lists
+        hash = YAML.load_file Rails.root.join('config/example_data_lists.yml')
+
+        hash.each do |kind,list|
+          list.each do |title,items|
+
+            data_list = self.data_lists.create(
+              :title => title,
+              :kind => kind,
+              :public => false
+            )
+            items.each do |item|
+              data_list.create_item(DataItem::KIND_TEXT, item['title'], item['content'])
+            end
+          end
+        end
+
+      end
+
       def fork(data_list)
         if !self.data_lists.find_by_forked_from_id(data_list.id).blank?
           raise DataList::RepeatForkError.new

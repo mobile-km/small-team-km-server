@@ -1,0 +1,20 @@
+COLLECTION:
+  列表一:
+    -
+      title: 条目一标题
+      content: 条目一内容
+    -
+      title: 条目二标题
+      content: 条目二内容
+STEP:
+  列表二:
+    -
+      title: 条目一标题
+      content: 条目一内容
+    -
+      title: 条目二标题
+      content: 条目二内容
+    -
+      title: 条目三标题
+      content: 条目三内容
+

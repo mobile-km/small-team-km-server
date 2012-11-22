@@ -9,6 +9,9 @@ Voteapp::Application.routes.draw do
   get  '/signup'        => 'signup#form'
   post '/signup_submit' => 'signup#form_submit'
 
+  # -- 版本检查
+  get '/check_version' => 'version#check_version'
+
   # -- 外部资源采集相关 --
   get  '/notes/add_image'     => 'images#add',
        :as                    => :add_image

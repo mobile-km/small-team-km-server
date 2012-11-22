@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121121082838) do
+ActiveRecord::Schema.define(:version => 20121122024736) do
 
   create_table "attitudes", :force => true do |t|
     t.integer  "chat_node_id"
@@ -165,6 +165,14 @@ ActiveRecord::Schema.define(:version => 20121121082838) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_show_tip",               :default => true
+  end
+
+  create_table "version_change_logs", :force => true do |t|
+    t.string   "version"
+    t.string   "usable_oldest_version"
+    t.text     "change_log"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "watches", :force => true do |t|

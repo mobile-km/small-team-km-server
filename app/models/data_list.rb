@@ -144,7 +144,7 @@ class DataList < ActiveRecord::Base
     module InstanceMethods
       def create_example_data_lists
         hash = YAML.load_file Rails.root.join('config/example_data_lists.yml')
-
+        new_data_list_hash = {}
         hash.each do |kind,list|
           list.each do |title,items|
 
@@ -153,12 +153,15 @@ class DataList < ActiveRecord::Base
               :kind => kind,
               :public => false
             )
+            new_data_list_hash[kind] = data_list
             items.each do |item|
               data_list.create_item(DataItem::KIND_TEXT, item['title'], item['content'])
             end
           end
         end
 
+        dl = new_data_list_hash[DataList::KIND_STEP]
+        DataList.where(:id=>dl.id).update_all(:updated_at=>(Time.now+1))
       end
 
       def fork(data_list)

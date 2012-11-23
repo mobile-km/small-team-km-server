@@ -9,7 +9,7 @@ class Follow < ActiveRecord::Base
   module UserMethods
     def self.included(base)
       base.has_many :follows
-      base.has_many :follow_users, :through => :follows, :source => :follow_user
+      base.has_many :follow_users_db, :through => :follows, :source => :follow_user
     end
 
     def follow(follow_user)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121122063419) do
+ActiveRecord::Schema.define(:version => 20121123024008) do
 
   create_table "attitudes", :force => true do |t|
     t.integer  "chat_node_id"
@@ -106,6 +106,13 @@ ActiveRecord::Schema.define(:version => 20121122063419) do
     t.string   "attach_content_type"
     t.integer  "attach_file_size"
     t.datetime "attach_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "follows", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "follow_user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -19,8 +19,8 @@ class DataList < ActiveRecord::Base
   validates :title, :presence => true
   validates :kind,  :presence => true, :inclusion => DataList::KINDS
 
-  scope :with_kind_collection, where(:kind => KIND_COLLECTION)
-  scope :with_kind_step, where(:kind => KIND_STEP)
+  scope :with_kind_collection, where(:kind => KIND_COLLECTION).order('updated_at DESC')
+  scope :with_kind_step, where(:kind => KIND_STEP).order('updated_at DESC')
   scope :public_timeline, where(:public => true).order('updated_at DESC')
 
   def to_hash

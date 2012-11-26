@@ -57,4 +57,6 @@ class ModelCallbackManagement
 
   # config
   ModelCallbackManagement.load_vector_cache_proxy UserFollowUsersProxy
+  ModelCallbackManagement.load_vector_cache_proxy UserPublicCreatedDataListsProxy
+  ModelCallbackManagement.load_vector_cache_proxy UserFollowDataListsProxy
 end

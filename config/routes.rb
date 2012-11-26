@@ -65,6 +65,7 @@ Voteapp::Application.routes.draw do
         get :public_timeline
         get :watch_list
         get :forked_list
+        get :follows_list
       end
 
       member do
@@ -86,6 +87,15 @@ Voteapp::Application.routes.draw do
         member do
           put :order
         end
+      end
+    end
+
+    resources :users do
+      member do
+        post :follow
+        post :unfollow
+        get :follows
+        get :fans
       end
     end
   end

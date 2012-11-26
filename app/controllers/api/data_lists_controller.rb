@@ -196,4 +196,10 @@ class Api::DataListsController < ApplicationController
     origin_data_list.reload
     render :json => origin_data_list.to_hash
   end
+
+  def follows_list
+    per_page = params[:per_page] || 20
+    data_lists = current_user.follow_data_lists(params[:since_timestamp],per_page)
+    render(:json => data_lists.map{ |data_list| data_list.to_hash })
+  end
 end

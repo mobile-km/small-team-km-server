@@ -8,6 +8,7 @@ class UserFollowDataListsProxy
       :class  => User ,
       :follow_data_lists => Proc.new {|user,timestamp,per_page|
         per_page ||= 20
+        per_page = per_page.to_i
         ids = []
         user.follow_users_db.each do |u|
           ids += UserPublicCreatedDataListsProxy.new(u).data_list_ids(timestamp,per_page)

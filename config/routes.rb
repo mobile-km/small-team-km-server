@@ -96,6 +96,7 @@ Voteapp::Application.routes.draw do
         post :unfollow
         get :follows
         get :fans
+        get :public_data_lists
       end
     end
   end

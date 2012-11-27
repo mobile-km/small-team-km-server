@@ -8,12 +8,12 @@ class Api::UsersController < ApplicationController
   def show
     if @user != current_user
       json = {
-        :user => current_user.api0_json_hash,
+        :user => @user.api0_json_hash,
         :followed => current_user.followed?(@user)
       }
     else
       json = {
-        :user => current_user.api0_json_hash
+        :user => @user.api0_json_hash
       }
     end
     render :json => json

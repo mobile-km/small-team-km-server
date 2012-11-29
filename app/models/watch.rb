@@ -32,5 +32,9 @@ class Watch < ActiveRecord::Base
       watch = self.watchs.find_by_data_list_id(data_list_id)
       watch.destroy if !watch.blank?
     end
+
+    def watched?(data_list)
+      self.watched_list.include?(data_list)
+    end
   end
 end

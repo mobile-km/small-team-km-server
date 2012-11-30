@@ -65,6 +65,7 @@ Voteapp::Application.routes.draw do
         get :public_timeline
         get :watch_list
         get :forked_list
+        get :be_forked_list
         get :follows_list
       end
 

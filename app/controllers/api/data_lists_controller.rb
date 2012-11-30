@@ -99,6 +99,11 @@ class Api::DataListsController < ApplicationController
     render(:json => @data_lists.map{ |data_list| data_list.to_hash })
   end
 
+  def be_forked_list
+    @data_lists = current_user.data_lists.with_be_forked.paginate(:page => params[:page],:per_page => params[:per_page]||20)
+    render(:json => @data_lists.map{ |data_list| data_list.to_hash })
+  end
+
   def commit_meta_list
     data_list = DataList.find(params[:id])
     render :json => data_list.commit_meta_hash

@@ -19,6 +19,7 @@ class Api::DataItemsController < ApplicationController
       :read => @data_list.read?(current_user),
       :has_commits => @data_list.has_commits?.to_s,
       :watched     => current_user.watched?(@data_list).to_s,
+      :forked      => current_user.forked?(@data_list).to_s,
       :forked_from => @data_list.forked_from.blank? ? {} : {
         :creator => {
           :id => @data_list.forked_from.creator.id,

@@ -192,6 +192,10 @@ class DataList < ActiveRecord::Base
         end
         forked_data_list
       end
+
+      def forked?(data_list)
+        self.forked_data_lists.include?(data_list)
+      end
     end
   end
 

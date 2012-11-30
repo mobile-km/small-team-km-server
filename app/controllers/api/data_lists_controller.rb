@@ -144,6 +144,10 @@ class Api::DataListsController < ApplicationController
     merger = DataListMerger.new(forked_data_list)
     commit = merger.next_commit
     render :json => {
+      :origin => {
+        :data_list => origin_data_list.to_hash,
+        :data_items => origin_data_list.data_items.map{|data_item|data_item.to_hash}
+      },
       :next_commits_count => merger.get_commits.length,
       :next_commit => commit.blank? ? {} : commit.to_hash
     }
@@ -155,10 +159,11 @@ class Api::DataListsController < ApplicationController
     merger = DataListMerger.new(forked_data_list)
     data_item = merger.accept_next_commit
     commit = merger.next_commit
+    origin_data_list.reload
     render :json => {
-      :data_item => {
-        :server_id => data_item.id,
-        :position => data_item.position
+      :origin => {
+        :data_list => origin_data_list.to_hash,
+        :data_items => origin_data_list.data_items.map{|data_item|data_item.to_hash}
       },
       :next_commits_count => merger.get_commits.length,
       :next_commit => commit.blank? ? {} : commit.to_hash
@@ -172,6 +177,10 @@ class Api::DataListsController < ApplicationController
     merger.reject_next_commit
     commit = merger.next_commit
     render :json => {
+      :origin => {
+        :data_list => origin_data_list.to_hash,
+        :data_items => origin_data_list.data_items.map{|data_item|data_item.to_hash}
+      },
       :next_commits_count => merger.get_commits.length,
       :next_commit => commit.blank? ? {} : commit.to_hash
     }

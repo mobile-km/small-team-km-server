@@ -22,7 +22,7 @@ class DataList < ActiveRecord::Base
   scope :with_kind_collection, where(:kind => KIND_COLLECTION).order('updated_at DESC')
   scope :with_kind_step, where(:kind => KIND_STEP).order('updated_at DESC')
   scope :public_timeline, where(:public => true).order('updated_at DESC')
-  scope :with_be_forked, joins('inner join data_lists as data_lists_other on data_lists_other.forked_from_id = data_lists.id')
+  scope :with_be_forked, joins('inner join data_lists as data_lists_other on data_lists_other.forked_from_id = data_lists.id').group('data_lists.id')
 
   def to_hash
     return {

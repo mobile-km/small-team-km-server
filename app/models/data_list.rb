@@ -194,7 +194,7 @@ class DataList < ActiveRecord::Base
       end
 
       def forked?(data_list)
-        self.forked_data_lists.include?(data_list)
+        !self.data_lists.where(:forked_from_id => data_list.id).blank?
       end
     end
   end

@@ -58,7 +58,7 @@ class Api::UsersController < ApplicationController
   end
 
   def public_data_lists
-    @data_lists = current_user.data_lists.public_timeline.paginate(:page => params[:page],:per_page => params[:per_page]||20)
+    @data_lists = @user.data_lists.public_timeline.paginate(:page => params[:page],:per_page => params[:per_page]||20)
     render(:json => @data_lists.map{ |data_list| data_list.to_hash })
   end
 

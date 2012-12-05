@@ -62,4 +62,16 @@ class Api::UsersController < ApplicationController
     render(:json => @data_lists.map{ |data_list| data_list.to_hash })
   end
 
+  def search
+    users = User.where("name = ? and id != ?",params[:query],1).paginate(:page => params[:page],:per_page => params[:per_page]||20)
+    json = users.map do |u|
+      {
+        :user => u.api0_json_hash,
+        :followed => current_user.followed?(u)
+      }
+    end
+
+    render :json => json
+  end
+
 end

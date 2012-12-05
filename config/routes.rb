@@ -99,6 +99,10 @@ Voteapp::Application.routes.draw do
         get :fans
         get :public_data_lists
       end
+
+      collection do
+        get :search
+      end
     end
   end
 end

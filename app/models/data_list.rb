@@ -24,14 +24,23 @@ class DataList < ActiveRecord::Base
   scope :public_timeline, where(:public => true).order('updated_at DESC')
   scope :with_be_forked, joins('inner join data_lists as data_lists_other on data_lists_other.forked_from_id = data_lists.id').group('data_lists.id')
 
-  def to_hash
+  def to_hash(neste_count = 0)
+    if neste_count >= 3
+      forked_from = {}
+      forked_from_id = nil
+    else
+      forked_from = self.forked_from.blank? ? {} : self.forked_from.to_hash(neste_count+1)
+      forked_from_id = self.forked_from_id
+    end
+
     return {
       :id         => self.id,
       :title      => self.title,
       :kind       => self.kind,
       :public     => self.public?.to_s,
       :has_commits => self.has_commits?.to_s,
-      :forked_from_id => self.forked_from_id,
+      :forked_from_id => forked_from_id,
+      :forked_from => forked_from,
       :forked_from_is_removed => self.forked_from_is_removed?.to_s,
       :is_removed => false,
       :creator => {

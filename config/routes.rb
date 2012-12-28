@@ -56,6 +56,14 @@ Voteapp::Application.routes.draw do
     post '/account/change_avatar'  => 'account#change_avatar'
     post '/account/change_show_tip'  => 'account#change_show_tip'
 
+
+    # 音乐搜索
+    resources :music_infos do
+      collection do
+        get :search
+      end
+    end
+
     # -- 列表
     resources :data_lists, :shallow => true do
       collection do

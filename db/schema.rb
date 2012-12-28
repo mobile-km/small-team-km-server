@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121228053556) do
+ActiveRecord::Schema.define(:version => 20121228054353) do
 
   create_table "attitudes", :force => true do |t|
     t.integer  "chat_node_id"
@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(:version => 20121228053556) do
     t.string   "album_title"
     t.string   "author_name"
     t.text     "cover_src"
-    t.text     "listen_location"
+    t.text     "file_url"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

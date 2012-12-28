@@ -6,11 +6,11 @@ class MusicSearch
   end
 
 
-  def result
+  def search
     # 发出请求，从API URL获取 JSON 数据
     fetch
 
-    # 保存到数据库
+    # 保存到数据库, 并返回数组
     store
   end
 

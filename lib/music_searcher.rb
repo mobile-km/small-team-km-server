@@ -58,6 +58,8 @@ class MusicSearcher
         MusicInfo.create(music)
       else
         current.update_attributes(music)
+        current
+        
       end
     end
 

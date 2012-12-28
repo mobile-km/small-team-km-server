@@ -151,6 +151,17 @@ ActiveRecord::Schema.define(:version => 20121228054920) do
   add_index "online_records", ["key"], :name => "index_online_records_on_key"
   add_index "online_records", ["user_id"], :name => "index_online_records_on_user_id"
 
+  create_table "slice_temp_files", :force => true do |t|
+    t.integer  "creator_id"
+    t.string   "file_name"
+    t.integer  "file_size"
+    t.string   "path"
+    t.integer  "saved_size"
+    t.integer  "saved_blob_num"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "name",                      :default => "",   :null => false
     t.string   "hashed_password",           :default => "",   :null => false

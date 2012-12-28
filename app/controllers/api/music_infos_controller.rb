@@ -1,4 +1,4 @@
-class MusicInfosController < ApplicationController
+class Api::MusicInfosController < ApplicationController
   def search
     result = MusicSearcher.new(params[:query]).search
 

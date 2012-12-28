@@ -4,6 +4,9 @@ class MusicInfo < ActiveRecord::Base
   validates :music_title, :presence => true,
             :uniqueness => {:scope => [:album_title, :author_name]}
 
+  scope :find_items, (lambda do |key|
+    where("album_title like '%#{key}%' or author_name like '%#{key}%' or music_title like '%#{key}%' ")
+  end)
 
 
   def self.get_by_info(item)

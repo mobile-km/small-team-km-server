@@ -8,29 +8,43 @@ class MusicSearch
 
   def search
     # 发出请求，从API URL获取 JSON 数据
-    fetch
+    begin
+      fetch
+    rescue Exception
+      return local_search
+    end
+
+    return local_search if @music_items.blank?
 
     # 保存到数据库, 并返回数组
     store
   end
 
+  def local_search
+    MusicInfo.find_items(@key)
+  end
+
 
   def fetch
     page = 1
-    num = 3
-    url = "http://kuang.xiami.com/app/nineteen/search/key/#{@key}/logo/1/num/#{num}/page/#{page}?callback"
+    num = 20
+
+    key = CGI.escape(@key)
+    url = "http://kuang.xiami.com/app/nineteen/search/key/#{key}/logo/1/num/#{num}/page/#{page}?callback"
     uri = URI.parse(url)
 
     target = Net::HTTP.new(uri.host, uri.port)
     music_json = target.get2(uri.path, {'accept'=>'text/json'}).body
-    @music_list = JSON.parse(music_json)
+    @music_result = JSON.parse(music_json)
+
+    @music_items = @music_result['results']
   end
 
 
   def store
-    items = @music_list['results']
+    
 
-    music_arr = items.map do |item|
+    music_arr = @music_items.map do |item|
       music = {}
 
       music[:album_title] = CGI.unescape(item['album_name'])

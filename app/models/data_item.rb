@@ -2,10 +2,12 @@ class DataItem < ActiveRecord::Base
   KIND_TEXT  = 'TEXT'
   KIND_IMAGE = 'IMAGE'
   KIND_URL   = 'URL'
-  KINDS = [ KIND_TEXT, KIND_IMAGE, KIND_URL ]
+  KINS_MUSIC = 'MUSIC'
+  KINDS = [ KIND_TEXT, KIND_IMAGE, KIND_URL, KIND_MUSIC ]
 
   belongs_to :data_list
   belongs_to :file_entity
+  belongs_to :music_info
 
   validates :title,        :presence => true,
     :uniqueness => {:scope => :data_list_id}

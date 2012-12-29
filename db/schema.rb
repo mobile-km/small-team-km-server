@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121228054920) do
+ActiveRecord::Schema.define(:version => 20121229022409) do
 
   create_table "attitudes", :force => true do |t|
     t.integer  "chat_node_id"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(:version => 20121228054920) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "seed"
+    t.integer  "music_info_id"
   end
 
   create_table "data_list_readings", :force => true do |t|
@@ -150,17 +151,6 @@ ActiveRecord::Schema.define(:version => 20121228054920) do
 
   add_index "online_records", ["key"], :name => "index_online_records_on_key"
   add_index "online_records", ["user_id"], :name => "index_online_records_on_user_id"
-
-  create_table "slice_temp_files", :force => true do |t|
-    t.integer  "creator_id"
-    t.string   "file_name"
-    t.integer  "file_size"
-    t.string   "path"
-    t.integer  "saved_size"
-    t.integer  "saved_blob_num"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "users", :force => true do |t|
     t.string   "name",                      :default => "",   :null => false

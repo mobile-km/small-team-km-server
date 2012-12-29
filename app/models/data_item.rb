@@ -19,6 +19,8 @@ class DataItem < ActiveRecord::Base
   validates :url,            :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_URL}},
     :uniqueness => {:scope => :data_list_id}
 
+  validates :music_info,     :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_MUSIC}}
+
   after_save :set_data_list_delta_flag
   after_destroy :set_data_list_delta_flag
   def set_data_list_delta_flag

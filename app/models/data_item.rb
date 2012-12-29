@@ -62,6 +62,10 @@ class DataItem < ActiveRecord::Base
       :url        => self.url,
       :seed       => self.seed,
       :image_url  => self.file_entity.blank? ? "" : self.file_entity.attach.url,
+
+      :music_info => self.music_info.blank? ? {} : self.music_info.to_hash,
+
+
       :data_list => {
         :server_updated_time => self.data_list.updated_at.to_i
       }

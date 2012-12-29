@@ -2,7 +2,7 @@ class DataItem < ActiveRecord::Base
   KIND_TEXT  = 'TEXT'
   KIND_IMAGE = 'IMAGE'
   KIND_URL   = 'URL'
-  KINS_MUSIC = 'MUSIC'
+  KIND_MUSIC = 'MUSIC'
   KINDS = [ KIND_TEXT, KIND_IMAGE, KIND_URL, KIND_MUSIC ]
 
   belongs_to :data_list

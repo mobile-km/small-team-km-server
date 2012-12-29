@@ -3,17 +3,29 @@ require 'spec_helper'
 describe '数据列表' do
   let(:ben7th) {FactoryGirl.create :user}
   let(:lifei) {FactoryGirl.create :user, :with_data_lists}
+  before(:each) do
+    # lifei 会创建一共 34 个，2+32
+    # 2 个 演示 data_list
+    # 32 个 FactoryGirl 创建的
+    lifei.data_lists
+    # ben7th 会创建 2 个 演示 data_list
+    ben7th.data_lists
+  end
 
   describe '个人动作' do
-    it '用户可以创建一个列表' do
-      DataList.count.should == 0
+    it '创建新用户的时候，会给用户创建两个演示列表' do
+      DataList.count.should == 36
+    end
 
-      ben7th.data_lists.count.should == 0
+    it '用户可以创建一个列表' do
+      DataList.count.should == 36
+
+      ben7th.data_lists.count.should == 2
       ben7th.data_lists.create :title => '我的列表',
                                :kind => 'COLLECTION'
-      ben7th.data_lists.count.should == 1
+      ben7th.data_lists.count.should == 3
 
-      DataList.count.should == 1
+      DataList.count.should == 37
       DataList.last.creator.should == ben7th
     end
 
@@ -95,7 +107,7 @@ describe '数据列表' do
         lifei_count.should_not == 0
         public_count.should_not == 0
 
-        lifei_count.should == public_count
+        lifei_count.should == public_count+2
 
         data_list = lifei.data_lists.last
         data_list.update_attributes :public => false
@@ -126,7 +138,7 @@ describe '数据列表' do
 
       it '用户可以收藏(watch)其他人的列表，且反复watch一个列表不会重复创建watch记录' do
         lifei.data_lists.count.should_not == 0
-        ben7th.data_lists.count.should == 0
+        ben7th.data_lists.count.should == 2
 
         ben7th.watched_list.length.should == 0
         ben7th.watch lifei.data_lists[0]

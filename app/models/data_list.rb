@@ -66,7 +66,8 @@ class DataList < ActiveRecord::Base
     when DataItem::KIND_URL
       self.data_items.create(:kind => DataItem::KIND_URL, :title => title, :url => value)
     when DataItem::KIND_MUSIC
-      self.data_items.create(:kind => DataItem::KIND_MUSIC, :title => title, :music_info_id => value.id)
+      music_info = MusicInfo.find(value)
+      self.data_items.create(:kind => DataItem::KIND_MUSIC, :title => title, :music_info_id => music_info.id)
     end
 
     if !item.valid?

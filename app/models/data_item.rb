@@ -1,25 +1,29 @@
+# -*- coding: utf-8 -*-
 class DataItem < ActiveRecord::Base
-  KIND_TEXT  = 'TEXT'
-  KIND_IMAGE = 'IMAGE'
-  KIND_URL   = 'URL'
-  KIND_MUSIC = 'MUSIC'
-  KINDS = [ KIND_TEXT, KIND_IMAGE, KIND_URL, KIND_MUSIC ]
+  KIND_TEXT    = 'TEXT'
+  KIND_IMAGE   = 'IMAGE'
+  KIND_URL     = 'URL'
+  KIND_MUSIC   = 'MUSIC'
+  KIND_PRODUCT = 'PRODUCT'
+  KINDS = [ KIND_TEXT, KIND_IMAGE, KIND_URL, KIND_MUSIC, KIND_PRODUCT ]
 
   belongs_to :data_list
   belongs_to :file_entity
   belongs_to :music_info
+  belongs_to :product
 
   validates :title,        :presence => true,
     :uniqueness => {:scope => :data_list_id}
   validates :data_list_id, :presence => true
   validates :kind,         :presence => true, :inclusion => DataItem::KINDS
 
-  validates :content,        :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_TEXT}}
-  validates :file_entity,    :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_IMAGE}}
-  validates :url,            :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_URL}},
+  validates :content,      :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_TEXT}}
+  validates :file_entity,  :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_IMAGE}}
+  validates :url,          :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_URL}},
     :uniqueness => {:scope => :data_list_id}
 
-  validates :music_info,     :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_MUSIC}}
+  validates :music_info,   :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_MUSIC}}
+  validates :product,      :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_PRODUCT}}
 
   after_save :set_data_list_delta_flag
   after_destroy :set_data_list_delta_flag
@@ -64,7 +68,7 @@ class DataItem < ActiveRecord::Base
       :image_url  => self.file_entity.blank? ? "" : self.file_entity.attach.url,
 
       :music_info => self.music_info.blank? ? {} : self.music_info.to_hash,
-
+      :product    => self.product.blank? ? {} : self.product.to_hash,
 
       :data_list => {
         :server_updated_time => self.data_list.updated_at.to_i
@@ -83,6 +87,8 @@ class DataItem < ActiveRecord::Base
       attrs[:file_entity] = FileEntity.new(:attach => param_value) if !param_value.blank?
     when DataItem::KIND_URL
       attrs[:url] = param_value if !param_value.blank?
+    when DataItem::KIND_PRODUCT
+      attrs[:product] = params_value if !param_value.blank?
     end
 
     self.update_attributes(attrs)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121228070458) do
+ActiveRecord::Schema.define(:version => 20121229022409) do
 
   create_table "attitudes", :force => true do |t|
     t.integer  "chat_node_id"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(:version => 20121228070458) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "seed"
+    t.integer  "music_info_id"
   end
 
   create_table "data_list_readings", :force => true do |t|
@@ -113,6 +114,16 @@ ActiveRecord::Schema.define(:version => 20121228070458) do
   create_table "follows", :force => true do |t|
     t.integer  "user_id"
     t.integer  "follow_user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "music_infos", :force => true do |t|
+    t.string   "music_title"
+    t.string   "album_title"
+    t.string   "author_name"
+    t.text     "cover_src"
+    t.text     "file_url"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

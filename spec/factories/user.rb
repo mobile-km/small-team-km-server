@@ -8,11 +8,11 @@ FactoryGirl.define do
       after_create do |user|
         16.times do
           Timecop.travel(Time.now + 1.hours)
-          user.data_lists << FactoryGirl.create(:data_list, :kind => 'COLLECTION')
+          FactoryGirl.create(:data_list, :kind => 'COLLECTION', :creator_id => user.id)
         end
         16.times do
           Timecop.travel(Time.now + 1.hours)
-          user.data_lists << FactoryGirl.create(:data_list, :kind => 'STEP')
+          FactoryGirl.create(:data_list, :kind => 'STEP', :creator_id => user.id)
         end
       end
     end
@@ -21,7 +21,7 @@ FactoryGirl.define do
       after_create do |user|
         16.times do
           Timecop.travel(Time.now + 1.hours)
-          user.data_lists << FactoryGirl.create(:data_list, :with_data_items, :kind => 'COLLECTION')
+          FactoryGirl.create(:data_list, :with_data_items, :kind => 'COLLECTION', :creator_id => user.id)
         end
       end
     end

@@ -65,6 +65,8 @@ class DataList < ActiveRecord::Base
       self.data_items.create(:kind => DataItem::KIND_IMAGE, :title => title, :file_entity => file_entity)
     when DataItem::KIND_URL
       self.data_items.create(:kind => DataItem::KIND_URL, :title => title, :url => value)
+    when DataItem::KIND_MUSIC
+      self.data_items.create(:kind => DataItem::KIND_MUSIC, :title => title, :music_info_id => value)
     end
 
     if !item.valid?

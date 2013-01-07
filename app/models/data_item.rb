@@ -2,10 +2,12 @@ class DataItem < ActiveRecord::Base
   KIND_TEXT  = 'TEXT'
   KIND_IMAGE = 'IMAGE'
   KIND_URL   = 'URL'
-  KINDS = [ KIND_TEXT, KIND_IMAGE, KIND_URL ]
+  KIND_MUSIC = 'MUSIC'
+  KINDS = [ KIND_TEXT, KIND_IMAGE, KIND_URL, KIND_MUSIC ]
 
   belongs_to :data_list
   belongs_to :file_entity
+  belongs_to :music_info
 
   validates :title,        :presence => true,
     :uniqueness => {:scope => :data_list_id}
@@ -16,6 +18,8 @@ class DataItem < ActiveRecord::Base
   validates :file_entity,    :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_IMAGE}}
   validates :url,            :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_URL}},
     :uniqueness => {:scope => :data_list_id}
+
+  validates :music_info,     :presence => {:if => lambda {|data_item| data_item.kind == DataItem::KIND_MUSIC}}
 
   after_save :set_data_list_delta_flag
   after_destroy :set_data_list_delta_flag
@@ -58,6 +62,10 @@ class DataItem < ActiveRecord::Base
       :url        => self.url,
       :seed       => self.seed,
       :image_url  => self.file_entity.blank? ? "" : self.file_entity.attach.url,
+
+      :music_info => self.music_info.blank? ? {} : self.music_info.to_hash,
+
+
       :data_list => {
         :server_updated_time => self.data_list.updated_at.to_i
       }

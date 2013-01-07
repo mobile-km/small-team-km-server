@@ -63,6 +63,14 @@ Voteapp::Application.routes.draw do
       end
     end
 
+
+    # 音乐搜索
+    resources :music_infos do
+      collection do
+        get :search
+      end
+    end
+
     # -- 列表
     resources :data_lists, :shallow => true do
       collection do

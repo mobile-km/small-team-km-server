@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 Voteapp::Application.routes.draw do  
   # -- 用户登录认证相关 --
   root :to=>"index#index"
@@ -55,6 +56,12 @@ Voteapp::Application.routes.draw do
     post '/account/change_name'    => 'account#change_name'
     post '/account/change_avatar'  => 'account#change_avatar'
     post '/account/change_show_tip'  => 'account#change_show_tip'
+
+    resources :products do
+      collection do
+        get :search
+      end
+    end
 
     # -- 列表
     resources :data_lists, :shallow => true do

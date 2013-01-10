@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130107042707) do
+ActiveRecord::Schema.define(:version => 20130110071232) do
 
   create_table "attitudes", :force => true do |t|
     t.integer  "chat_node_id"
@@ -156,12 +156,10 @@ ActiveRecord::Schema.define(:version => 20130107042707) do
   create_table "products", :force => true do |t|
     t.string   "code"
     t.string   "name"
-    t.string   "kind"
-    t.string   "unit"
-    t.string   "origin"
     t.string   "vendor"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "code_format"
   end
 
   create_table "users", :force => true do |t|

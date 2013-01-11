@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
 class ProductFetcher
-  NAME_URL   = 'http://android.wochacha.com/Qrsearch/Price'
-  VENDOR_URL = 'http://search.anccnet.com/searchResult.aspx'
-  
   def initialize(barcode, format)
     @code   = barcode
     @format = format
-    build_request_urls
   end
 
   def fetch
@@ -30,17 +26,22 @@ private
     !Product.create(self.result).errors.any?
   end
 
-  def build_request_urls
-    @name_request_url   = URI("#{NAME_URL}?barcode=#{@code}&encoding=#{@format}")
-    @vendor_request_url = URI("#{VENDOR_URL}?keyword=#{@code}")
+  def name_url_template(code, format)
+    URI("http://android.wochacha.com/Qrsearch/Price?barcode=#{code}&encoding=#{format}")
+  end
+
+  def vendor_url_template(code)
+    URI("http://search.anccnet.com/searchResult.aspx?keyword=#{code}")
   end
 
   def fetch_name
-    parse_response Net::HTTP.get(@name_request_url), '.commodity_title font'
+    parse_response Net::HTTP.get(name_url_template(@code, @format)),
+                   '.commodity_title font'
   end
 
   def fetch_vendor
-    parse_response Net::HTTP.get(@vendor_request_url), '#firm_name'
+    parse_response Net::HTTP.get(vendor_url_template(@code)),
+                   '#firm_name'
   end
 
   def parse_response(response, html_node)

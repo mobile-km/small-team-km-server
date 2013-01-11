@@ -36,19 +36,15 @@ private
   end
 
   def fetch_name
-    parse_name Net::HTTP.get(@name_request_url)
+    parse_response Net::HTTP.get(@name_request_url), '.commodity_title font'
   end
 
   def fetch_vendor
-    parse_vendor Net::HTTP.get(@vendor_request_url)
+    parse_response Net::HTTP.get(@vendor_request_url), '#firm_name'
   end
 
-  def parse_name(response)
-    Nokogiri::HTML(response).css('.commodity_title font').each {|name| break name.content}
-  end
-
-  def parse_vendor(response)
-    Nokogiri::HTML(response).css('#firm_name').each {|name| break name.content}
+  def parse_response(response, html_node)
+    Nokogiri::HTML(response).css(html_node).each {|node| break node.content}
   end
 
   class BadBarcodeError < Exception; end
